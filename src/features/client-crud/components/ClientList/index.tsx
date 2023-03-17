@@ -2,13 +2,14 @@ import * as React from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableContainer from "@mui/material/TableContainer";
-import ContainerType1 from "../containerType1";
+
 import { RepairsTableHeader } from "./headerRow";
 import { RepairsTableRow } from "./TableRow";
 import useRepairListResponsiveRow from "./hooks/useResponsiveRow";
 import { RepairListContext } from "./context";
 import { withContextSelectRowHeader } from "./context/RowSelectContext";
 import { TableToolbar } from "./TableToolbar";
+import Paper from "@mui/material/Paper";
 
 
 // Connect Select row context with tableToolbar to update selected rows state.
@@ -20,7 +21,7 @@ export default function RepairsTable() {
   const mode = useRepairListResponsiveRow();
 
   return (
-    <ContainerType1 Title="Listado de reparaciones">
+    <Paper elevation={3} >
       <RepairsTableOptionsForSelectedWithContext selectedCount={0} />
       <TableContainer>
         <Table
@@ -43,7 +44,7 @@ export default function RepairsTable() {
           </TableBody>
         </Table>
       </TableContainer>
-    </ContainerType1>
+    </Paper >
   );
 }
 RepairsTable.defaultProps = {};

@@ -32,11 +32,10 @@ const SelectAllCheckBoxWithContext =
 export function RepairsTableHeader({ mode }: any) {
   let lables = [
     "",
-    "Name",
+    "Nombre",
     // "IMEI",
     "Email",
-    "Status",
-    "Actions",
+    "Acciones",
   ];
 
   return (

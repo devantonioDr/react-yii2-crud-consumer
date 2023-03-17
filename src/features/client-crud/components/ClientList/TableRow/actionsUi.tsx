@@ -1,54 +1,41 @@
 import React, { useContext } from "react";
-import DevicesOtherIcon from "@mui/icons-material/DevicesOther";
-import SwapVertIcon from "@mui/icons-material/SwapVert";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Stack from "@mui/material/Stack";
-import Tooltip from "@mui/material/Tooltip";
-import IconButton from "@mui/material/IconButton";
-import { RowChangeStatusDialogContext, withContextRowChangeStatusDialogToggle } from "../context/RowChangeStatusDialogContext";
 import { getRamdomBackgroundColor } from "../../../helper/getRamdomColor";
 import { withContextDeleteDialogToggle } from "../context/RowDeleteContext";
+import { ButtonWithToolTip } from "../../UI/Button";
+import { withContextEditDialogToggle } from "../context/RowEditContext";
+import EditIcon from '@mui/icons-material/Edit';
 
-const ButtonWithToolTip = ({ title, Icon, onClick }: any) => {
-  return (
-    <Tooltip arrow title={title}>
-      <IconButton onClick={onClick} size="small">
-        <Icon color="disabled" fontSize={"small"} />
-      </IconButton>
-    </Tooltip>
-  );
-};
 
-const ModifyStatusButton = ({handleClickOpen}:{handleClickOpen?:Function}) => {
+
+const DeleteButton = ({ handleClickOpen }: { handleClickOpen?: Function }) => {
   return (
     <ButtonWithToolTip
       style={getRamdomBackgroundColor()}
       onClick={handleClickOpen}
-      title="Modificar estado"
-      Icon={DevicesOtherIcon}
-    />
-  );
-};
-
-const DeleteRepairButton = ({handleClickOpen}:{handleClickOpen?:Function}) => {
-  return (
-    <ButtonWithToolTip
-      style={getRamdomBackgroundColor()}
-      onClick={handleClickOpen}
-      title="Eliminar"
+      title="Delete"
       Icon={DeleteIcon}
     />
   );
 };
 
-const ModifyStatusButtonWithContext = withContextRowChangeStatusDialogToggle(ModifyStatusButton);
-const DeleteWithContext = withContextDeleteDialogToggle(DeleteRepairButton);
+const EditRowButton = withContextEditDialogToggle(({ handleClickOpen }: any) => {
+
+  return <ButtonWithToolTip
+    style={getRamdomBackgroundColor()}
+    onClick={handleClickOpen}
+    title="Edit"
+    Icon={EditIcon}
+  />
+});
+
+const DeleteWithContext = withContextDeleteDialogToggle(DeleteButton);
 
 export default function TableRowActions() {
   return (
-    <Stack  direction="row" spacing={0}>
-      <ModifyStatusButtonWithContext />
-      <ButtonWithToolTip title="Agregar movimiento" Icon={SwapVertIcon} />
+    <Stack direction="row" spacing={0}>
+      <EditRowButton />
       <DeleteWithContext />
     </Stack>
   );

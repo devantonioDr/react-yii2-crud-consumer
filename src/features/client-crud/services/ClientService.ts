@@ -12,7 +12,7 @@ class ClientService {
     private handleResponse = async <T>(response: Response): Promise<T> => {
 
         // to handle 204 yii2 delete requests.
-        if(response.status === 204) return {} as any;
+        if (response.status === 204) return {} as any;
 
         const data = await response.json();
         if (response.ok) {
@@ -32,10 +32,14 @@ class ClientService {
 
         try {
             const response = await fetch(
-                `${this.baseUrl}${endpoint}`, 
-            { method,
-                body: data && JSON.stringify(data),
-            });
+                `${this.baseUrl}${endpoint}`,
+                {
+                    method,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: data && JSON.stringify(data),
+                });
             return this.handleResponse<T>(response);
         } catch (error) {
             if (error instanceof Error) {

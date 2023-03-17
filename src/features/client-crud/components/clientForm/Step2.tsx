@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 
-import { FormInput, FormInputSelect, FormPickerInput } from "../UI/FormInput";
+import { FormInput, FormInputSelect } from "../UI/FormInput";
 
 import { StepperBackAndForth } from "../UI/StepperBackAndForth";
 import { notEmptyValidator } from "../../utils/formValidators";
@@ -10,31 +10,10 @@ function Step2() {
   return (
     <Box sx={{ marginRight: "20px", mt: 2 }}>
       <Grid container columns={12} spacing={2}>
-        <Grid item sm={6} xs={12}>
-          <FormInput
-            label="First Name"
-            name="perfil.first_name"
-            validators={[notEmptyValidator]}
-            validateAsTyping={true}
-          />
-        </Grid>
-        <Grid item sm={6} xs={12}>
-          <FormInput
-            label="Last Name"
-            name="perfil.last_name"
-            validators={[notEmptyValidator]}
-            validateAsTyping={true}
-          />
-        </Grid>
 
-        <Grid item sm={6} xs={12}>
-          <FormPickerInput
-            label="Date of Birth"
-            name="perfil.date_of_birth"
-            // validators={[notEmptyValidator]}
-            validateAsTyping={true}
-          />
-        </Grid>
+
+        
+
         <Grid item sm={6} xs={12}>
           <FormInputSelect
             label="Gender"
@@ -42,12 +21,12 @@ function Step2() {
             validators={[notEmptyValidator]}
             options={[
               {
-                desc:"Male",
-                value:"Male"
+                desc: "Male",
+                value: "Male"
               },
               {
-                desc:"Female",
-                value:"Female"
+                desc: "Female",
+                value: "Female"
               }
             ]}
             validateAsTyping={true}
@@ -63,9 +42,9 @@ function Step2() {
       </Grid>
       <StepperBackAndForth
         satisfy={[
-          "perfil.first_name",
-          "perfil.last_name",
-          "perfil.date_of_birth",
+          // "perfil.first_name",
+          // "perfil.last_name",
+          // "perfil.date_of_birth",
           "perfil.gender",
           "perfil.description",
         ]}

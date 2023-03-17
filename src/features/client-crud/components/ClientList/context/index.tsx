@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import ClientService  from "../../../services/ClientService";
+import ClientService from "../../../services/ClientService";
 import { RowSelectContextProvider } from "./RowSelectContext";
 import { RowShowMoreContextProvider } from "./RowShowMoreContext";
 
@@ -17,15 +17,15 @@ export const RepairListContextProvider = (props: any) => {
 
   const fetchNewRepairs = async () => {
     try {
-      const result = await ClientService.get('client') as any;
+      const result = (await ClientService.get("client?sort=-id")) as any;
       setRepairs([...result?.data]);
-    } catch (error:any) {
+    } catch (error: any) {
       console.log(error.message);
       setHasError(true);
     }
     // return fetch("./api/repairs").then(async (data) => {
     //   let json = await data.json();
-      
+
     // });
   };
 
@@ -40,11 +40,11 @@ export const RepairListContextProvider = (props: any) => {
 
   return (
     <RepairListContext.Provider value={contextValue}>
-      
-        <RowShowMoreContextProvider>
-          <RowSelectContextProvider>{props.children}</RowSelectContextProvider>
-        </RowShowMoreContextProvider>
-      
+      <RowShowMoreContextProvider>
+
+        <RowSelectContextProvider>{props.children}</RowSelectContextProvider>
+        
+      </RowShowMoreContextProvider>
     </RepairListContext.Provider>
   );
 };

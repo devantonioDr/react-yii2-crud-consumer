@@ -7,11 +7,9 @@ import { DialogContext } from "../context/dialogContextProvider";
 //     const { dialogHook } = useContext(InsertRepairContext);
 // };
 
-export const DialogToggler = (props: { title: string }) => {
-    const dialogHook = useContext(DialogContext);
-
+export const DialogToggler = (props: { title: string,dialogHook:any }) => {
     return (
-        <Button variant="contained" onClick={dialogHook.toggle}>
+        <Button variant="contained" onClick={props.dialogHook.toggle}>
             {props.title}
         </Button>
     )

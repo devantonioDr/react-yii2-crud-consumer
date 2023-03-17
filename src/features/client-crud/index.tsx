@@ -2,15 +2,16 @@ import * as React from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableContainer from "@mui/material/TableContainer";
-import { withContextSelectRowHeader } from "./components/repairsList/context/RowSelectContext";
-import { RepairListContext } from "./components/repairsList/context";
-import { RepairsTableHeader } from "./components/repairsList/headerRow";
-import useRepairListResponsiveRow from "./components/repairsList/hooks/useResponsiveRow";
-import { RepairsTableRow } from "./components/repairsList/TableRow";
-import { TableToolbar } from "./components/repairsList/TableToolbar";
+
 import { debug } from "console";
 import Paper from "@mui/material/Paper";
 import TablePagination from "@mui/material/TablePagination";
+import { withContextSelectRowHeader } from "./components/ClientList/context/RowSelectContext";
+import useRepairListResponsiveRow from "./components/ClientList/hooks/useResponsiveRow";
+import { TableToolbar } from "./components/ClientList/TableToolbar";
+import { RepairListContext } from "./components/ClientList/context";
+import { RepairsTableHeader } from "./components/ClientList/headerRow";
+import { RepairsTableRow } from "./components/ClientList/TableRow";
 
 const usePagination = () => {
   const [page, setPage] = React.useState(0);
@@ -38,10 +39,10 @@ const usePagination = () => {
 };
 
 // Connect Select row context with tableToolbar to update selected rows state.
-const RepairsTableOptionsForSelectedWithContext =
-  withContextSelectRowHeader(TableToolbar);
+const RepairsTableOptionsForSelectedWithContext = withContextSelectRowHeader(TableToolbar);
 
 export default function RepairsTable() {
+  
   const repairListContext = React.useContext(RepairListContext);
   const mode = useRepairListResponsiveRow();
   const rows = repairListContext.repairs;

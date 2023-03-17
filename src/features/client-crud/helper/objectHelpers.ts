@@ -39,3 +39,14 @@ export function flattenObject(obj: any, prefix = "") {
 
     return flatObj;
 }
+
+
+export  function filterNonObjects(obj:any) {
+    const filteredObj:any = {};
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key) && typeof obj[key] !== 'object') {
+        filteredObj[key] = obj[key];
+      }
+    }
+    return filteredObj;
+  }

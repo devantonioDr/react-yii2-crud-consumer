@@ -4,8 +4,10 @@ import React, {
     useCallback,
     useContext,
     useEffect,
+    useMemo,
     useState
 } from "react";
+import { flattenObject } from "../helper/objectHelpers";
 
 
 
@@ -21,7 +23,9 @@ type EfficientFormContextValue = {
     setValue: React.Dispatch<any>;
     onSubmit: (event:any) => void;
     executeAllValidators: (satisfy?: string[]) => boolean;
+    unRegisterFields?:boolean;
 };
+
 export type validatorType = (formData: EfficientFormState) => string[];
 
 // To execute all the inputs validator functions then return a single array of strings with the errors if any.
@@ -41,14 +45,29 @@ export const EfficientFormContext = createContext<EfficientFormContextValue>(
     {} as EfficientFormContextValue
 );
 
+
+
+
 // Form context.
 export function EfficientFormContextProvider(props: {
+    data?:ClientData,
     submitForm?: (value: EfficientFormState) => {failed:boolean,data:boolean};
-    children:any
+    children:any,
+    unRegisterFields?:boolean
 }) {
+     
+    // const initialState = useMemo(()=>{
+    //     return {
+    //         data: props.data ? flattenObject(props.data) : {},
+    //         errors: {},
+    //         validators: {},
+    //         haveErrors: false
+    //     }
+    // },[]);
+    // console.log("initialState",initialState);
     // collection of form values
     const [value, setValue] = useState<EfficientFormState>({
-        data: {},
+        data: props.data ? flattenObject(props.data) : {},
         errors: {},
         validators: {},
         haveErrors: false
@@ -107,7 +126,7 @@ export function EfficientFormContextProvider(props: {
     };
 
     // Creates the context value.
-    const contextValue = { value, setValue, onSubmit, executeAllValidators };
+    const contextValue = { value, setValue, onSubmit, executeAllValidators,unRegisterFields:props.unRegisterFields };
 
     // Returns the context provider.
     return (
@@ -115,6 +134,17 @@ export function EfficientFormContextProvider(props: {
             {props.children}
         </EfficientFormContext.Provider>
     );
+};
+
+// Wrapper for the form element.
+export const withContextEfficientFormSubmit = <T extends object>(
+    Wrapped: React.ComponentType<T>
+) => {
+    const PureWrapped = memo(Wrapped);
+    return (props: any) => {
+        const { onSubmit } = useContext(EfficientFormContext);
+        return <PureWrapped   onClick={onSubmit}  {...props}/>;
+    };
 };
 
 // Wrapper for the form element.
@@ -142,7 +172,7 @@ export const withContextEfficientFormInput = <T extends object>(
         defaultValue?: string;
         startAdornment?: JSX.Element;
     }) => {
-        const { value, setValue } = useContext(EfficientFormContext);
+        const { value, setValue,unRegisterFields } = useContext(EfficientFormContext);
 
         // Make name from label.
         const inputName = props.name;
@@ -150,6 +180,7 @@ export const withContextEfficientFormInput = <T extends object>(
         // To register the input info to the state.
         const registerInput = useCallback(
             (name: string) => {
+                // console.log("registerInput",name);
                 // Register input to state.
                 setValue((formState: EfficientFormState) => {
                     // Bind label names to validators.
@@ -160,7 +191,9 @@ export const withContextEfficientFormInput = <T extends object>(
 
                     // Below code is a little bit verbose but efficient bacause it only mutates
                     // needed values instead of recreating the entire formState.
-                    const defaultValue = props.defaultValue || "";
+                    const defaultValue =   props.defaultValue || "" ;
+              
+                    // console.log(name,formState.data[name]);
                     return {
                         ...formState,
                         // Set input values.
@@ -187,6 +220,7 @@ export const withContextEfficientFormInput = <T extends object>(
         );
         // Unregister input from the state.
         const unregisterInput = useCallback((name: string) => {
+            // console.log("unregisterInput",name);
             setValue((formState: EfficientFormState) => {
                 // Make a new container to hold values.
                 const { data, errors, validators } = { ...formState };
@@ -207,11 +241,13 @@ export const withContextEfficientFormInput = <T extends object>(
 
         // Register Input to state
         useEffect(() => {
-            // console.log("Inputs registered to state.");
+            console.log("Inputs registered to state.",inputName);
             registerInput(inputName);
             return () => {
-                // console.log("Unregistered: " + inputName)
-                unregisterInput(inputName);
+                if(unRegisterFields){
+                    console.log("Unregistered: " + inputName)
+                    unregisterInput(inputName);
+                }
             }
         }, []);
 

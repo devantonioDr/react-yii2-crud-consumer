@@ -30,7 +30,8 @@ function SmallScreenRowCell({ title, value }: any) {
       }}
     >
       <Typography variant="subtitle2">{title}</Typography>
-      <span>{value}</span>
+      <Typography variant="subtitle2">{value}</Typography>
+      {/* <span>{value}</span> */}
     </Box>
   );
 }
@@ -46,9 +47,9 @@ export const SmallScreenRowContent = ({ data }: { data: ClientData }) => {
             value={<SelectRowCheckBoxWithContext invoiceId={id} />}
           />
 
-          <SmallScreenRowCell title="NAME:" value={`${perfil.first_name} ${perfil.last_name}`} />
+          <SmallScreenRowCell title="Nombre:" value={`${perfil.first_name} ${perfil.last_name}`} />
 
-          <SmallScreenRowCell title="EMAIL:" value={email} />
+          <SmallScreenRowCell title="Email:" value={email} />
 
           {/* <SmallScreenRowCell title="Marca:" value={device.trademark} />
 

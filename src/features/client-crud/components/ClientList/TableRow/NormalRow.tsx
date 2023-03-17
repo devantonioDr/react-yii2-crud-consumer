@@ -12,6 +12,8 @@ import {
   ShowMoreButton,
 } from "./commonUi";
 import { withContextShowMore } from "../context/RowShowMoreContext";
+import { Typography } from "@mui/material";
+
 
 const ShowMoreButtonWithContext = withContextShowMore(ShowMoreButton);
 
@@ -19,7 +21,7 @@ const SelectRowCheckBoxWithContext =
   withContextSelectRowCheckBox(SelectRowCheckBox);
 
 export const NormalRowContent = ({ data }: { data: ClientData }) => {
-  let { id, status, email,perfil } = data;
+  let { id, status, email, perfil } = data;
 
   return (
     <>
@@ -34,14 +36,24 @@ export const NormalRowContent = ({ data }: { data: ClientData }) => {
       </TableCell> */}
       {/* <TableCell align="left"> {""}</TableCell> */}
 
-      <TableCell align="left">{ `${perfil.first_name} ${perfil.last_name}` }</TableCell>
-      <TableCell align="left"> {email}</TableCell>
       <TableCell align="left">
-        <StatusRow status={status} />
+        <Typography variant="subtitle1">
+          {`${perfil?.first_name} ${perfil?.last_name}`}
+        </Typography>
       </TableCell>
-  
+      <TableCell align="left">
+        <Typography variant="subtitle1">
+          {email}
+        </Typography>
+
+      </TableCell>
+      {/* <TableCell align="left">
+        <StatusRow status={status} />
+      </TableCell> */}
+
       <TableCell align="left">
         <TableRowActions />
+
       </TableCell>
     </>
   );

@@ -33,7 +33,7 @@ export function ShowMoreButton(props:any) {
         disableRipple={false}
         variant="text"
       >
-        {props.isExpanded ? "less" : "more"}
+        {props.isExpanded ? "Menos" : "Más"}
       </Button>
     </Box>
   );
@@ -52,17 +52,19 @@ export function RowExtraInfo(props: RowExtraInfoProps) {
     <TableRow
     // style={getRamdomBackgroundColor()}
     >
-      <TableCell colSpan={11} padding="none" align="left">
+      <TableCell  colSpan={11} padding="none" align="left">
         <Collapse in={props.isExpanded}>
+          
           <Stack
             component={"div"}
             sx={{
               boxShadow:
                 "inset 0 4px 8px -5px rgb(50 50 50 / 75%), inset 0 -4px 8px -5px rgb(50 50 50 / 75%);",
-              padding: 2,
+              padding: 3,
+              
             }}
           >
-            <table>
+            <table >
               <tbody>
                 <tr>
                   <td>Name:</td>

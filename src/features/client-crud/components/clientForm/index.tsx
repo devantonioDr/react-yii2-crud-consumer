@@ -15,36 +15,33 @@ import {
   StepperContext,
   StepperContextProvider,
 } from "../contextStepper/context/StepperContextProvider";
-import { useToggleDialog } from "../contextDialog/hooks/useToggleDialog";
-import { EfficientFormContextProvider } from "../../context/EfficientFormContextProvider";
-import { Form } from "../UI/Form";
-import { nestObjectKeys } from "../../helper/objectHelpers";
 
-export const ClientForm = (props:{submitForm:any}) => {
+import { Form } from "../UI/Form";
+
+export const ClientForm = () => {
   return (
-    < EfficientFormContextProvider submitForm={props.submitForm}>
+    
       <StepperContextProvider
         steps_initial_state={[
           {
-            label: "Datos de la Reparación",
+            label: "Datos principales del cliente",
             description: "",
             ready: false,
           },
           {
-            label: "Datos del cliente",
+            label: "Perfil del cliente",
             description: "",
             ready: false,
           },
           {
-            label: "Folio del servicio, costos",
-            description: `Folio del servicio, costos`,
+            label: "Dirección del cliente",
+            description: "",
             ready: false,
           },
         ]}
       >
         <ClientFormWithStepper />
       </StepperContextProvider>
-    </EfficientFormContextProvider>
   );
 };
 

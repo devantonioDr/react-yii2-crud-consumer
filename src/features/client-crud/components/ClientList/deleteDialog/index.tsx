@@ -5,11 +5,9 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DeleteIcon from "@mui/icons-material/Delete";
-import SaveIcon from "@mui/icons-material/Save";
-import { useToggleDialog } from "../hooks/useChangeStatusDialog";
+
 import LoadingButton from "@mui/lab/LoadingButton";
 import Typography from "@mui/material/Typography";
-import Chip from "@mui/material/Chip";
 
 export interface RepairChangeStatusDialogProps {
   open: boolean;
@@ -53,7 +51,7 @@ export function DeleteDialog(props: RepairChangeStatusDialogProps) {
     <Dialog maxWidth="sm" onClose={() => { }} open={props.open}>
       <DialogTitle>¿Está seguro que desea eliminar la reparación?</DialogTitle>
       <DialogContent>
-        <Typography>
+        <Typography variant="subtitle1">
           Una vez eliminada, no se puede recuperar ningún dato de ella.
         </Typography>
       </DialogContent>

@@ -3,6 +3,14 @@ import { validatorType } from "../context/EfficientFormContextProvider";
 
 type ValidatorBoundContext = {inputName: string;inputLabel: string;};
 
+export const validEmail:validatorType = function (this:ValidatorBoundContext,formData) {
+    let errors: string[] = [];
+    if (formData.data[this.inputName].match(/[^A-z]/g)) {
+        errors.push(`Campo ${this.inputLabel.toLowerCase()} debe contener solo letras A-z`);
+    }
+    return errors;
+};
+
 export const onlyLetters:validatorType = function (this:ValidatorBoundContext,formData) {
     let errors: string[] = [];
     if (formData.data[this.inputName].match(/[^A-z]/g)) {

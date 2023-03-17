@@ -9,8 +9,8 @@ import {
 
 import { RepairListContext } from "..";
 import ClientService from "../../../../services/ClientService";
+import { useToggleDialog } from "../../../contextDialog/hooks/useToggleDialog";
 import { DeleteDialog } from "../../deleteDialog";
-import { useToggleDialog } from "../../hooks/useChangeStatusDialog";
 
 type RowDeleteDialogContextProviderProps = {
   rowData: ClientData;
