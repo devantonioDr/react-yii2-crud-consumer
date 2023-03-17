@@ -37,7 +37,7 @@ export const DialogComponent = ({ DialogOptionsComp, dialogHook, title, children
         </DialogContent>
         <DialogActions>
           {DialogOptionsComp}
-          <Button onClick={onClose}>Close </Button>
+          <Button onClick={onClose}>Cerrar</Button>
         </DialogActions>
       </Dialog>
     </>

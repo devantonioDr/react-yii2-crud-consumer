@@ -49,10 +49,10 @@ const CancelButton = (props: { onClose: () => void }) => {
 export function DeleteDialog(props: RepairChangeStatusDialogProps) {
   return (
     <Dialog maxWidth="sm" onClose={() => { }} open={props.open}>
-      <DialogTitle>¿Está seguro que desea eliminar la reparación?</DialogTitle>
+      <DialogTitle>¿Está seguro que desea eliminar este cliente?</DialogTitle>
       <DialogContent>
         <Typography variant="subtitle1">
-          Una vez eliminada, no se puede recuperar ningún dato de ella.
+          Una vez eliminado, no se puede recuperar ningún dato de este.
         </Typography>
       </DialogContent>
       <DialogActions>

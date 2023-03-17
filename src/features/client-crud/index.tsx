@@ -75,6 +75,10 @@ export default function RepairsTable() {
         </Table>
       </TableContainer>
       <TablePagination
+      labelRowsPerPage="Filas por página"
+      labelDisplayedRows={({ from, to, count }) => {
+        return `${from}–${to} de ${count !== -1 ? count : `más de ${to}`}`;
+        }}
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
         count={rows.length}

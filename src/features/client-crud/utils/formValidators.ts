@@ -13,7 +13,7 @@ export const validEmail:validatorType = function (this:ValidatorBoundContext,for
 
 export const onlyLetters:validatorType = function (this:ValidatorBoundContext,formData) {
     let errors: string[] = [];
-    if (formData.data[this.inputName].match(/[^A-z]/g)) {
+    if (formData.data[this.inputName].match(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g)) {
         errors.push(`Campo ${this.inputLabel.toLowerCase()} debe contener solo letras A-z`);
     }
     return errors;

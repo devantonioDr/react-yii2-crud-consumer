@@ -11,7 +11,7 @@ function Step3() {
       <Grid container columns={12} spacing={2}>
         <Grid item sm={6} xs={12}>
           <FormInput
-            label="Address Line 1"
+            label="Dirección Línea 1"
             name="address.address_line_1"
             validators={[notEmptyValidator]}
             validateAsTyping={true}
@@ -20,7 +20,7 @@ function Step3() {
 
         <Grid item sm={6} xs={12}>
           <FormInput
-            label="Address Line 2"
+            label="Línea de dirección 2"
             name="address.address_line_2"
             validators={[]}
             validateAsTyping={true}
@@ -28,7 +28,7 @@ function Step3() {
         </Grid>
         <Grid item sm={6} xs={12}>
           <FormInput
-            label="City"
+            label="Ciudad"
             name="address.city"
             validators={[notEmptyValidator]}
             validateAsTyping={true}
@@ -36,7 +36,7 @@ function Step3() {
         </Grid>
         <Grid item sm={6} xs={12}>
           <FormInput
-            label="State"
+            label="Estado"
             name="address.state"
             validators={[notEmptyValidator]}
             validateAsTyping={true}
@@ -44,7 +44,7 @@ function Step3() {
         </Grid>
         <Grid item sm={6} xs={12}>
           <FormInput
-            label="Country"
+            label="País"
             name="address.country"
             validators={[notEmptyValidator]}
             validateAsTyping={true}
@@ -52,7 +52,7 @@ function Step3() {
         </Grid>
         <Grid item sm={6} xs={12}>
           <FormInput
-            label="Zip Code"
+            label="Código postal"
             name="address.zip_code"
             validators={[notEmptyValidator]}
             validateAsTyping={true}

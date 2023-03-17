@@ -16,16 +16,16 @@ function Step2() {
 
         <Grid item sm={6} xs={12}>
           <FormInputSelect
-            label="Gender"
+            label="Género"
             name="perfil.gender"
             validators={[notEmptyValidator]}
             options={[
               {
-                desc: "Male",
+                desc: "Masculino",
                 value: "Male"
               },
               {
-                desc: "Female",
+                desc: "Femenino",
                 value: "Female"
               }
             ]}
@@ -34,7 +34,7 @@ function Step2() {
         </Grid>
         <Grid item xs={12}>
           <FormInput
-            label="Description"
+            label="Descripción"
             name="perfil.description"
             validateAsTyping={true}
           />

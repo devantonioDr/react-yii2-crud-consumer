@@ -12,7 +12,7 @@ function Step1() {
       <Grid container columns={12} spacing={2}>
         <Grid item sm={6} xs={12}>
           <FormInput
-            label="First Name"
+            label="Nombres"
             name="perfil.first_name"
             validators={[notEmptyValidator,onlyLetters]}
             validateAsTyping={true}
@@ -20,7 +20,7 @@ function Step1() {
         </Grid>
         <Grid item sm={6} xs={12}>
           <FormInput
-            label="Last Name"
+            label="Apellido"
             name="perfil.last_name"
             validators={[notEmptyValidator,onlyLetters]}
             validateAsTyping={true}
@@ -29,7 +29,7 @@ function Step1() {
 
         <Grid item sm={6} xs={12}>
           <FormInput
-            label="Email"
+            label="Correo electrónico"
             name="email"
             validators={[notEmptyValidator]}
             validateAsTyping={true}
@@ -37,7 +37,7 @@ function Step1() {
         </Grid>
         <Grid item sm={6} xs={12}>
           <FormInput
-            label="Phone"
+            label="Teléfono"
             name="phone"
             validators={[notEmptyValidator]}
             validateAsTyping={true}

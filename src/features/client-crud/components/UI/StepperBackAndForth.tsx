@@ -38,7 +38,7 @@ const NextButtonMemoized = memo(({ onNext }: any) => {
 const TriggerFormAcctionButton = memo(({ onNext }: any) => {
   return (
     <Button variant="contained" onClick={onNext} sx={{ mt: 1, mr: 1 }}>
-      Save
+      Guardar cambios
       <ArrowRightIcon />
     </Button>
   )

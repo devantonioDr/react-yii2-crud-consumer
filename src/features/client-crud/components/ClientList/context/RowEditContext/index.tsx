@@ -64,7 +64,7 @@ export function RowEditDialogContextProvider({
         tableContext.fetchNewRepairs();
         dialogHook.handleClose();
         setWasDeleted(false);
-      }, 1000);
+      }, 500);
 
     } catch (error: any) {
       console.log(error.message);
@@ -87,8 +87,8 @@ export function RowEditDialogContextProvider({
         <DialogComponent
           keepMounted={false}
           dialogHook={dialogHook}
-          title="Edit a client"
-          DialogOptionsComp={<SaveChangesButton >Save changes </SaveChangesButton>}>
+          title="Editar cliente"
+          DialogOptionsComp={<SaveChangesButton >Guardar</SaveChangesButton>}>
 
           <ClientForm />
         </DialogComponent>
