@@ -1,3 +1,10 @@
+# Sobre esta app
+
+El Rest Api escucha a http://localhost/mnt/
+
+Version de node 16.16.0
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

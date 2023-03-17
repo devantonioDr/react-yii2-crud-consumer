@@ -1,12 +1,10 @@
-interface ErrorResponse {
-    message: string;
-}
+import { REST_API_URL } from "../../../config";
 
 class ClientService {
     private baseUrl: string;
 
     constructor() {
-        this.baseUrl = 'http://10.0.0.15/mnt/';
+        this.baseUrl = REST_API_URL;
     }
 
     private handleResponse = async <T>(response: Response): Promise<T> => {
