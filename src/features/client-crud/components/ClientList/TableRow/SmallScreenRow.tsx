@@ -29,8 +29,8 @@ function SmallScreenRowCell({ title, value }: any) {
         alignItems: "center",
       }}
     >
-      <Typography variant="subtitle2">{title}</Typography>
-      <Typography variant="subtitle2">{value}</Typography>
+      <Typography >{title}</Typography>
+      <Typography variant="subtitle1">{value}</Typography>
       {/* <span>{value}</span> */}
     </Box>
   );

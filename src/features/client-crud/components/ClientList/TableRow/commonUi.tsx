@@ -21,7 +21,7 @@ export function ShowDate({ admissionDate }: { admissionDate: string }) {
   return <Typography variant="subtitle1" >{date}</Typography>;
 };
 
-export function ShowMoreButton(props:any) {
+export function ShowMoreButton(props: any) {
   return (
     <Box
       // style={getRamdomBackgroundColor()}
@@ -41,6 +41,15 @@ export function ShowMoreButton(props:any) {
 
 
 
+const TableTr = ({ title, text, style }: any) => {
+  return (
+    <tr>
+      <td style={style}><Typography>{title}</Typography></td>
+      <td style={style}><Typography variant="subtitle1">{text}</Typography></td>
+    </tr>
+  );
+};
+
 
 interface RowExtraInfoProps extends ClientData {
   isExpanded?: boolean;
@@ -52,53 +61,32 @@ export function RowExtraInfo(props: RowExtraInfoProps) {
     <TableRow
     // style={getRamdomBackgroundColor()}
     >
-      <TableCell  colSpan={11} padding="none" align="left">
+      <TableCell colSpan={11} padding="none" align="left">
         <Collapse in={props.isExpanded}>
-          
+
           <Stack
             component={"div"}
             sx={{
               boxShadow:
                 "inset 0 4px 8px -5px rgb(50 50 50 / 75%), inset 0 -4px 8px -5px rgb(50 50 50 / 75%);",
               padding: 3,
-              
+
             }}
           >
-            <table >
+            <table>
               <tbody>
-                <tr>
-                  <td>Name:</td>
-                  <td>{props.perfil.first_name} {props.perfil.last_name}</td>
-                </tr>
-                <tr>
-                  <td>Email:</td>
-                  <td>{props.email}</td>
-                </tr>
-                <tr>
-                  <td>Phone:</td>
-                  <td>{props.phone}</td>
-                </tr>
-                {/* <tr>
-                  <td>Status:</td>
-                  <td>{props.status}</td>
-                </tr> */}
-                <tr>
-                  <td style={{verticalAlign: 'initial'}}>Address:</td>
-                  <td>{props.address.address_line_1} {props.address.address_line_2} {props.address.city}, {props.address.state}, {props.address.zip_code}</td>
-                </tr>
-                <tr>
-                  <td>Date of Birth:</td>
-                  <td style={{verticalAlign: 'initial'}}>{props.perfil.date_of_birth}</td>
-                </tr>
-                <tr>
-                  <td>Gender:</td>
-                  <td>{props.perfil.gender}</td>
-                </tr>
-                <tr>
-                  <td style={{verticalAlign: 'initial'}}>Description:</td>
-                  <td>{props.perfil.description}</td>
-                </tr>
-                </tbody>
+                <TableTr title="Name:" text={`${props.perfil.first_name} ${props.perfil.last_name}`} />
+                <TableTr title="Email:" text={props.email} />
+                <TableTr title="Phone:" text={props.phone} />
+                <TableTr
+                style={{verticalAlign: 'initial'}}
+                  title="Address:"
+                  text={`${props.address.address_line_1} ${props.address.address_line_2} ${props.address.city}, ${props.address.state}, ${props.address.zip_code}`}
+                />
+                <TableTr style={{verticalAlign: 'initial'}} title="Date of Birth:" text={props.perfil.date_of_birth} />
+                <TableTr title="Gender:" text={props.perfil.gender} />
+                <TableTr style={{verticalAlign: 'initial'}} title="Description:" text={props.perfil.description} />
+              </tbody>
             </table>
           </Stack>
         </Collapse>
