@@ -241,11 +241,11 @@ export const withContextEfficientFormInput = <T extends object>(
 
         // Register Input to state
         useEffect(() => {
-            console.log("Inputs registered to state.",inputName);
+            // console.log("Inputs registered to state.",inputName);
             registerInput(inputName);
             return () => {
                 if(unRegisterFields){
-                    console.log("Unregistered: " + inputName)
+                    // console.log("Unregistered: " + inputName)
                     unregisterInput(inputName);
                 }
             }

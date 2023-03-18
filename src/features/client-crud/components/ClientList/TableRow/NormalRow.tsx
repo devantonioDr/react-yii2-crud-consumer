@@ -31,10 +31,7 @@ export const NormalRowContent = ({ data }: { data: ClientData }) => {
       <TableCell align="left">
         <ShowMoreButtonWithContext id={id} />
       </TableCell>
-      {/* <TableCell align="left">
-        <InfoIdButton invoiceId={id} />
-      </TableCell> */}
-      {/* <TableCell align="left"> {""}</TableCell> */}
+
 
       <TableCell align="left">
         <Typography variant="subtitle1">

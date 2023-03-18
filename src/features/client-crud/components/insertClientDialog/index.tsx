@@ -3,14 +3,14 @@ import { useContext } from "react";
 // Hooks
 import { useToggleDialog } from "../contextDialog/hooks/useToggleDialog";
 import { filterNonObjects, nestObjectKeys } from "../../helper/objectHelpers";
-import { DialogContextProvider } from "../contextDialog/context/dialogContextProvider";
 import { DialogToggler } from "../contextDialog/UI/dialogToggler";
 import { DialogComponent } from "../contextDialog/UI/dialogComponent";
 import { StepperContextProvider } from "../contextStepper/context/StepperContextProvider";
-import { ClientForm } from "../clientForm";
+import { ClientFormWithStepper, client_form_stepper_state } from "../clientForm";
 import ClientService from "../../services/ClientService";
 import { RepairListContext } from "../ClientList/context";
 import { EfficientFormContextProvider } from "../../context/EfficientFormContextProvider";
+import Button from "@mui/material/Button";
 
 export const InsertClientDialog = ({ }) => {
 
@@ -23,15 +23,15 @@ export const InsertClientDialog = ({ }) => {
     data.status = 0;
 
     const cliente = filterNonObjects(data);
-    const {perfil,address} = data;
+    const { perfil, address } = data;
 
- 
-   
+
+
     try {
       let resp = await ClientService.post('client', cliente) as any;
       perfil['client_id'] = resp.data.id;
       address['client_id'] = resp.data.id;
-// debugger;
+      // debugger;
       await Promise.all([
         ClientService.post('perfil', perfil),
         ClientService.post('address', address)
@@ -53,10 +53,17 @@ export const InsertClientDialog = ({ }) => {
   return (
     <>
       < EfficientFormContextProvider unRegisterFields={true} submitForm={submitForm as any}>
-        <DialogToggler dialogHook={dialogHook} title="Insertar client nuevo" />
-        <DialogComponent dialogHook={dialogHook} title="Insertar client nuevo">
-          <ClientForm  />
-        </DialogComponent>
+        <StepperContextProvider steps_initial_state={client_form_stepper_state}>
+
+          <DialogToggler dialogHook={dialogHook} title="Insertar client nuevo" />
+          <DialogComponent
+            dialogHook={dialogHook}
+            title="Insertar client nuevo"
+            DialogContentComp={<ClientFormWithStepper />}
+            DialogOptionsComp={<Button onClick={dialogHook.toggle}>Cerrar</Button>}
+          />
+
+        </StepperContextProvider>
       </EfficientFormContextProvider>
     </>
   );

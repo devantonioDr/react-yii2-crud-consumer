@@ -53,7 +53,6 @@ export function RepairsTableRow({
   data: ClientData;
   mode: TemplateMode;
 }) {
-  console.log("RepairsTableRow rerendered.");
 
   return (
     <>

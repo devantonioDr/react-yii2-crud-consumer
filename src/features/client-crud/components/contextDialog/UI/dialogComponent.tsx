@@ -1,24 +1,26 @@
-import Button from "@mui/material/Button";
-import Dialog, { DialogProps } from "@mui/material/Dialog";
+import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
+import { forwardRef, } from "react";
 
 
 interface DialogComponentProps {
-  children: any;
   title: string,
   dialogHook: any,
   DialogOptionsComp?: any
-  keepMounted?:boolean;
+  keepMounted?: boolean;
+  DialogContentComp?: any
 }
 
-export const DialogComponent = ({ DialogOptionsComp, dialogHook, title, children,keepMounted }: DialogComponentProps) => {
+export const DialogComponent = forwardRef(({
+  DialogOptionsComp,
+  dialogHook,
+  title,
+  keepMounted,
+  DialogContentComp
+}: DialogComponentProps, ref) => {
 
-
-  const onClose = () => {
-    dialogHook.toggle();
-  };
 
   return (
     <>
@@ -26,20 +28,18 @@ export const DialogComponent = ({ DialogOptionsComp, dialogHook, title, children
         maxWidth="md"
         fullScreen={dialogHook.fullScreen}
         open={dialogHook.open}
-        keepMounted={keepMounted}
-      // onClose={toggle}
-      >
+        keepMounted={keepMounted} >
         <DialogTitle>{title}</DialogTitle>
-        <DialogContent>
+        <DialogContent ref={ref} >
 
-          {children}
+          {DialogContentComp}
 
         </DialogContent>
         <DialogActions>
           {DialogOptionsComp}
-          <Button onClick={onClose}>Cerrar</Button>
+
         </DialogActions>
       </Dialog>
     </>
   );
-};
+});

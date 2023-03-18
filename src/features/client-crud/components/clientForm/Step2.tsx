@@ -11,9 +11,6 @@ function Step2() {
     <Box sx={{ marginRight: "20px", mt: 2 }}>
       <Grid container columns={12} spacing={2}>
 
-
-        
-
         <Grid item sm={6} xs={12}>
           <FormInputSelect
             label="Género"

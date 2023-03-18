@@ -50,26 +50,28 @@ const NextButton = (props: any) => {
   const stepperHook = useContext(StepperContext);
 
 
+
+  const onNext = useCallback(() => {
+    if (checkIfErrors()) return;
+
+    // Go next if it doesn't have errors.
+   
+    stepperHook.handleNext();
+  }, []);
+
   const checkIfErrors = () => {
     let satisfy = props.satisfy;
 
     let haveErrors = executeAllValidators(satisfy);
 
     return haveErrors;
-  }
+  };
 
-  const onNext = useCallback(() => {
-    if (checkIfErrors()) return;
-
-    // Go next if it doesn't have errors.
-    stepperHook.handleNext();
-  }, []);
-
-  const beforeSubmit = (event:any) => {
+  const beforeSubmit = (event: any) => {
     if (checkIfErrors()) return;
 
     onSubmit(event);
-  }
+  };
 
 
 

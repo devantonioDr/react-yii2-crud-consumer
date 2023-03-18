@@ -5,6 +5,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from "react";
 
@@ -12,9 +13,10 @@ import { RepairListContext } from "..";
 import { EfficientFormContextProvider, withContextEfficientFormSubmit } from "../../../../context/EfficientFormContextProvider";
 import { filterNonObjects, nestObjectKeys } from "../../../../helper/objectHelpers";
 import ClientService from "../../../../services/ClientService";
-import { ClientForm } from "../../../clientForm";
+import { ClientFormWithStepper, client_form_stepper_state } from "../../../clientForm";
 import { useToggleDialog } from "../../../contextDialog/hooks/useToggleDialog";
 import { DialogComponent } from "../../../contextDialog/UI/dialogComponent";
+import { StepperContextProvider } from "../../../contextStepper/context/StepperContextProvider";
 
 
 type RowEditDialogContextProviderProps = {
@@ -31,10 +33,10 @@ export function RowEditDialogContextProvider({
   rowData,
 }: RowEditDialogContextProviderProps) {
   const tableContext = useContext(RepairListContext);
+
   const [isloading, setIsloading] = useState<boolean>(false);
   const [wasDeleted, setWasDeleted] = useState<boolean>(false);
 
-  const dialogHook = useToggleDialog();
 
   const onError = useCallback(() => {
     setIsloading(false);
@@ -54,8 +56,8 @@ export function RowEditDialogContextProvider({
     try {
       await ClientService.put('client/' + rowData.id, cliente) as any;
       await Promise.all([
-        ClientService.put('perfil/'+perfil.id, perfil),
-        ClientService.put('address/'+address.id, address)
+        ClientService.put('perfil/' + perfil.id, perfil),
+        ClientService.put('address/' + address.id, address)
       ]);
       setIsloading(false);
       setWasDeleted(true);
@@ -74,32 +76,43 @@ export function RowEditDialogContextProvider({
 
   }, []);
 
+  const dialogHook = useToggleDialog();
 
   const conTextValue = {
     handleClickOpen: dialogHook.handleClickOpen,
   };
 
+
+
+
   return (
     <RowEditDialogContext.Provider value={conTextValue}>
       {/* Change state dialog */}
 
-      < EfficientFormContextProvider unRegisterFields={false} data={rowData} submitForm={handleSubmit as any}>
-        <DialogComponent
-          keepMounted={false}
-          dialogHook={dialogHook}
-          title="Editar cliente"
-          DialogOptionsComp={<SaveChangesButton >Guardar</SaveChangesButton>}>
-
-          <ClientForm />
-        </DialogComponent>
+      <EfficientFormContextProvider unRegisterFields={false} data={rowData} submitForm={handleSubmit as any}>
+        <StepperContextProvider steps_initial_state={client_form_stepper_state}>
+          <DialogComponent
+            keepMounted={false}
+            dialogHook={dialogHook}
+            title="Editar cliente"
+            DialogOptionsComp={
+              <>
+                <Button onClick={dialogHook.toggle}>Cerrar</Button>
+                <SaveChangesButton >Guardar</SaveChangesButton>
+              </>
+            }
+            DialogContentComp={<ClientFormWithStepper />}
+          />
+        </StepperContextProvider>
       </EfficientFormContextProvider>
+
+
       {children}
     </RowEditDialogContext.Provider>
   );
 }
 
 const SaveChangesButton = withContextEfficientFormSubmit(Button);
-
 
 // Comsumers
 // This consumer only cares about the toggleDialog Function.

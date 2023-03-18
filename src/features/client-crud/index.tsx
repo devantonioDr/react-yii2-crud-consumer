@@ -46,7 +46,6 @@ export default function RepairsTable() {
   const repairListContext = React.useContext(RepairListContext);
   const mode = useRepairListResponsiveRow();
   const rows = repairListContext.repairs;
-  console.log("repairs", repairListContext.repairs);
 
   // Pagination
   const { page, rowsPerPage, setPage, setRowsPerPage, handleChangePage,handleChangeRowsPerPage } = usePagination();

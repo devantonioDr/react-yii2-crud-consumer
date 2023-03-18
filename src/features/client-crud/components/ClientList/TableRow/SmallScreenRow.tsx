@@ -51,21 +51,6 @@ export const SmallScreenRowContent = ({ data }: { data: ClientData }) => {
 
           <SmallScreenRowCell title="Email:" value={email} />
 
-          {/* <SmallScreenRowCell title="Marca:" value={device.trademark} />
-
-          <SmallScreenRowCell title="Modelo:" value={device.model} />
-
-          <SmallScreenRowCell title="Cliente:" value={customer.name} /> */}
-
-          {/* <SmallScreenRowCell
-            title="Estado:"
-            value={<StatusRow status={status.key} />}
-          />
-
-          <SmallScreenRowCell
-            title="Sucursal:"
-            value={<Chip label={branchOffice.name} />}
-          /> */}
           <SmallScreenRowCell title="Acciones:" value={<TableRowActions />} />
 
           <ShowMoreButtonWithContext id={id} />

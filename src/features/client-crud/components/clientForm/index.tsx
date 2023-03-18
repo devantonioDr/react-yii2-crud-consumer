@@ -13,39 +13,36 @@ import Step2 from "./Step2";
 import Step3 from "./Step3";
 import {
   StepperContext,
-  StepperContextProvider,
 } from "../contextStepper/context/StepperContextProvider";
 
 import { Form } from "../UI/Form";
 
-export const ClientForm = () => {
-  return (
-    
-      <StepperContextProvider
-        steps_initial_state={[
-          {
-            label: "Datos principales del cliente",
-            description: "",
-            ready: false,
-          },
-          {
-            label: "Perfil del cliente",
-            description: "",
-            ready: false,
-          },
-          {
-            label: "Dirección del cliente",
-            description: "",
-            ready: false,
-          },
-        ]}
-      >
-        <ClientFormWithStepper />
-      </StepperContextProvider>
-  );
-};
 
-const ClientFormWithStepper = () => {
+
+
+
+
+export const client_form_stepper_state = [
+  {
+    label: "Datos principales del cliente",
+    description: "",
+    ready: false,
+  },
+  {
+    label: "Perfil del cliente",
+    description: "",
+    ready: false,
+  },
+  {
+    label: "Dirección del cliente",
+    description: "",
+    ready: false,
+  },
+]
+
+
+
+export const ClientFormWithStepper = () => {
   let stepperHook = useContext(StepperContext);
 
   return (
