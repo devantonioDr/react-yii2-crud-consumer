@@ -3,8 +3,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Stack from "@mui/material/Stack";
 import { withContextDeleteDialogToggle } from "../context/RowDeleteContext";
 import { ButtonWithToolTip } from "../../UI/Button";
-import { withContextEditDialogToggle } from "../context/RowEditContext";
+import { RowEditDialogContext } from "../context/RowEditContext";
 import EditIcon from '@mui/icons-material/Edit';
+import { RowDataContext } from "../context/RowDataProviderContext";
 
 
 
@@ -19,15 +20,17 @@ const DeleteButton = ({ handleClickOpen }: { handleClickOpen?: Function }) => {
   );
 };
 
-const EditRowButton = withContextEditDialogToggle(({ handleClickOpen }: any) => {
-
+const EditRowButton = () => {
+  const {rowData} = useContext(RowDataContext);
+  const {openEditForm} = useContext(RowEditDialogContext);
+  
   return <ButtonWithToolTip
-    onClick={handleClickOpen}
+    onClick={()=>openEditForm(rowData)}
     title="Edit"
     Icon={EditIcon}
     color="primary"
   />
-});
+};
 
 const DeleteWithContext = withContextDeleteDialogToggle(DeleteButton);
 

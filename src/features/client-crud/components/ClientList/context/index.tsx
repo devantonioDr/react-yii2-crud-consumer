@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
+import RepairsTable from "../../..";
 import ClientService from "../../../services/ClientService";
+import { InsertClientDialog } from "../../insertClientDialog";
+import { RowEditDialogContextProvider } from "./RowEditContext";
 import { RowSelectContextProvider } from "./RowSelectContext";
 import { RowShowMoreContextProvider } from "./RowShowMoreContext";
 
@@ -40,11 +43,18 @@ export const RepairListContextProvider = (props: any) => {
 
   return (
     <RepairListContext.Provider value={contextValue}>
-      <RowShowMoreContextProvider>
+      <RowEditDialogContextProvider>
 
-        <RowSelectContextProvider>{props.children}</RowSelectContextProvider>
-        
-      </RowShowMoreContextProvider>
+        <RowShowMoreContextProvider>
+
+          <RowSelectContextProvider>
+            <InsertClientDialog />
+            <RepairsTable />
+            {props.children}
+          </RowSelectContextProvider>
+
+        </RowShowMoreContextProvider>
+      </RowEditDialogContextProvider>
     </RepairListContext.Provider>
   );
 };

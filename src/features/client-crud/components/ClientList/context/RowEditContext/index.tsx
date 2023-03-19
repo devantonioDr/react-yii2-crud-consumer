@@ -4,25 +4,26 @@ import {
   memo,
   useCallback,
   useContext,
-  useEffect,
-  useRef,
   useState,
 } from "react";
 
 import { RepairListContext } from "..";
-import { EfficientFormContextProvider, withContextEfficientFormSubmit } from "../../../../context/EfficientFormContextProvider";
+import {  withContextEfficientFormSubmit } from "../../../../context/EfficientFormContextProvider";
 import { filterNonObjects, nestObjectKeys } from "../../../../helper/objectHelpers";
 import ClientService from "../../../../services/ClientService";
-import { ClientFormWithStepper, client_form_stepper_state } from "../../../clientForm";
 import { WithProvidersClientForm } from "../../../clientForm/withProvidersClientForm";
 import { useFeedBackDialog } from "../../../contextDialog/hooks/useFeedBackDialog";
 import { useToggleDialog } from "../../../contextDialog/hooks/useToggleDialog";
-import { DialogComponent } from "../../../contextDialog/UI/dialogComponent";
-import { StepperContextProvider } from "../../../contextStepper/context/StepperContextProvider";
+
+
+/*
+ This context responsability is to open the form to 
+ edit the table info at the current row
+*/
+
 
 
 type RowEditDialogContextProviderProps = {
-  rowData: ClientData;
   children?: any;
 };
 
@@ -30,15 +31,24 @@ type RowEditDialogContextProviderProps = {
 
 export const RowEditDialogContext = createContext<any>({} as any);
 
-export function RowEditDialogContextProvider({
-  children,
-  rowData,
-}: RowEditDialogContextProviderProps) {
+export function RowEditDialogContextProvider({ children }: RowEditDialogContextProviderProps) {
+
+
+
+  console.log("Edit form ready");
   const tableContext = useContext(RepairListContext);
 
   const feedBackDialog = useFeedBackDialog();
 
   const dialogHook = useToggleDialog();
+  const [rowData, setRowData] = useState<ClientData>({} as ClientData);
+
+  // When i trigger this function the form data gets passed to this context.
+  const openEditForm = (rowData: ClientData) => {
+    setRowData(rowData);
+    dialogHook.handleClickOpen();
+  }
+
 
   const feedBackWithDissmiss = (message: string, type: "positive" | "negative") => {
     feedBackDialog.handleOpen(message, type);
@@ -53,8 +63,6 @@ export function RowEditDialogContextProvider({
       tableContext.fetchNewRepairs();
     }, 1000);
   }
-
-
 
 
   const handleSubmit = useCallback(async (formData: any) => {
@@ -87,7 +95,7 @@ export function RowEditDialogContextProvider({
 
 
   const conTextValue = {
-    handleClickOpen: dialogHook.handleClickOpen,
+    openEditForm
   };
 
   return (

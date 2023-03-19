@@ -21,19 +21,12 @@ const theme: Theme = createTheme({
 function App() {
   return (
     <div className="App">
-      <DialogRequestOutCome type="negative" message="Algo salió mal" />
-      <DialogRequestOutCome type="positive" message="Éxitos" />
 
       <ThemeProvider theme={theme}>
-        
-        <RepairListContextProvider>
-          
-          <Container sx={{ mt: 4 }}>
-            <InsertClientDialog />
-            <RepairsTable />
-          </Container>
 
-        </RepairListContextProvider >
+        <Container sx={{ mt: 4 }}>
+          <RepairListContextProvider />
+        </Container>
 
       </ThemeProvider>
     </div>

@@ -16,6 +16,7 @@ import { RowDeleteDialogContextProvider } from "../context/RowDeleteContext";
 import { NormalRowContent } from "./NormalRow";
 import { TemplateMode } from "../../../types/Template";
 import { RowEditDialogContextProvider } from "../context/RowEditContext";
+import { RowDataContextProvider } from "../context/RowDataProviderContext";
 
 
 
@@ -32,16 +33,19 @@ class RowMainContentWrapper extends React.PureComponent<any> {
   render(): React.ReactNode {
     let { layOutMode, rowData }: any = this.props;
     return (
-      <RowChangeStatusDialogContextProvider rowData={rowData}>
-        <RowDeleteDialogContextProvider rowData={rowData}>
-          <RowEditDialogContextProvider rowData={rowData}>
+      <RowDataContextProvider rowData={rowData}>
+        <RowChangeStatusDialogContextProvider rowData={rowData}>
+          <RowDeleteDialogContextProvider rowData={rowData}>
+
 
             {layOutMode == "normal" && <NormalRowContent data={rowData} />}
             {layOutMode == "stacked" && <SmallScreenRowContent data={rowData} />}
 
-          </RowEditDialogContextProvider>
-        </RowDeleteDialogContextProvider>
-      </RowChangeStatusDialogContextProvider>
+
+          </RowDeleteDialogContextProvider>
+        </RowChangeStatusDialogContextProvider>
+      </RowDataContextProvider>
+
     );
   }
 }
