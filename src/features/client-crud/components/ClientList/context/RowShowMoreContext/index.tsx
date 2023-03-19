@@ -1,9 +1,6 @@
 import {
-  ComponentType,
   createContext,
-  memo,
   useCallback,
-  useContext,
   useState,
 } from "react";
 
@@ -12,9 +9,9 @@ type RowShowMoreContextProviderProps = {
 };
 
 type RowShowMoreContextValue = {
-  expanded: string;
+  expanded: number | string;
   setExpanded: any;
-  toggleExpanded: (invoiceId: string) => void;
+  toggleExpanded: (invoiceId: number) => void;
 };
 
 // Context.
@@ -26,10 +23,9 @@ export const RowShowMoreContext = createContext<RowShowMoreContextValue>(
 export function RowShowMoreContextProvider({
   children,
 }: RowShowMoreContextProviderProps) {
-  const [expanded, setExpanded] = useState<string>("");
+  const [expanded, setExpanded] = useState<number | string>("");
 
-  const toggleExpanded = useCallback((id: string) => {
-  
+  const toggleExpanded = useCallback((id: number) => {
     setExpanded((expanded) => {
       // If current is the one expanded.
       if (expanded == id) {
@@ -55,32 +51,4 @@ export function RowShowMoreContextProvider({
 
 // Consumers wrapper with hook.
 // Wraps components to be used with the context.
-type WithContextShowMoreProps = {
-  isExpanded?: boolean;
-  onClick?: Function;
-  id: string|number;
-};
 
-export function withContextShowMore<P extends object>(
-  Component: React.ComponentType<P>
-) {
-  const PureShowMoreButton: any = memo(Component
-  //   , (prev, next) => {
-  //   console.log(prev, next);
-  //   return false;
-  // }
-  );
-
-  return function (props: P & WithContextShowMoreProps) {
-    const state = useContext(RowShowMoreContext);
-    const isExpanded = state.expanded == props.id;
-
-    return (
-      <PureShowMoreButton
-        onClick={state.toggleExpanded}
-        isExpanded={isExpanded}
-        {...props}
-      />
-    );
-  };
-}

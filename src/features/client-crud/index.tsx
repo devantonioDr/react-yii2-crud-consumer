@@ -3,14 +3,15 @@ import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableContainer from "@mui/material/TableContainer";
 
+
 import Paper from "@mui/material/Paper";
 import TablePagination from "@mui/material/TablePagination";
-import { withContextSelectRowHeader } from "./components/ClientList/context/RowSelectContext";
 import useRepairListResponsiveRow from "./components/ClientList/hooks/useResponsiveRow";
 import { TableToolbar } from "./components/ClientList/TableToolbar";
 import { RepairListContext } from "./components/ClientList/context";
 import { RepairsTableHeader } from "./components/ClientList/headerRow";
 import { RepairsTableRow } from "./components/ClientList/TableRow";
+import { withSelectedCount } from "./components/ClientList/context/RowSelectContext/withSelectedCount";
 
 const usePagination = () => {
   const [page, setPage] = React.useState(0);
@@ -38,7 +39,7 @@ const usePagination = () => {
 };
 
 // Connect Select row context with tableToolbar to update selected rows state.
-const RepairsTableOptionsForSelectedWithContext = withContextSelectRowHeader(TableToolbar);
+const WithSelectedCountToolbar = withSelectedCount(TableToolbar);
 
 export default function RepairsTable() {
 
@@ -51,7 +52,7 @@ export default function RepairsTable() {
 
   return (
     <Paper sx={{ width: "100%", mb: 2, mt: 4 }}>
-      <RepairsTableOptionsForSelectedWithContext selectedCount={0} />
+      <WithSelectedCountToolbar selectedCount={0} />
       <TableContainer>
         <Table
           sx={{ minWidth: 3, padding: "0px 16px 0px 16px" }}

@@ -3,8 +3,7 @@ import Checkbox from "@mui/material/Checkbox";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { getRamdomBackgroundColor } from "../../../helper/getRamdomColor";
-import { withContextSelectAllCheckbox } from "../context/RowSelectContext";
+import { withContextSelectAllCheckbox } from "../context/RowSelectContext/withContextSelectAllCheckbox";
 
 export const SelectAllCheckBox = ({
   indeterminate,
@@ -26,8 +25,7 @@ export const SelectAllCheckBox = ({
   );
 };
 
-const SelectAllCheckBoxWithContext =
-  withContextSelectAllCheckbox(SelectAllCheckBox);
+const SelectAllCheckBoxWithContext = withContextSelectAllCheckbox(SelectAllCheckBox);
 
 export function RepairsTableHeader({ mode }: any) {
   let lables = [

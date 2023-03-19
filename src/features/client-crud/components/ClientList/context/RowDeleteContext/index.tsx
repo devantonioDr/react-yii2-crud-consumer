@@ -1,144 +1,106 @@
 import {
   createContext,
-  memo,
-  useCallback,
   useContext,
-  useEffect,
   useState,
 } from "react";
 
 import { RepairListContext } from "..";
 import ClientService from "../../../../services/ClientService";
 import { useToggleDialog } from "../../../contextDialog/hooks/useToggleDialog";
+import { ButtonWithToolTip } from "../../../UI/Button";
 import { DeleteDialog } from "../../deleteDialog";
+import { RowDataContext } from "../RowDataProviderContext";
+import DeleteIcon from "@mui/icons-material/Delete";
+
+
+
+
+
+
 
 type RowDeleteDialogContextProviderProps = {
-  rowData: ClientData;
   children?: any;
 };
 
 type RowDeleteDialogContextValue = {
-  handleClickOpen: Function;
+  openDeleteDialog: (rowData: ClientData) => void;
 };
+
 
 export const RowDeleteDialogContext =
   createContext<RowDeleteDialogContextValue>({} as RowDeleteDialogContextValue);
 
 export function RowDeleteDialogContextProvider({
   children,
-  rowData,
 }: RowDeleteDialogContextProviderProps) {
+
   const tableContext = useContext(RepairListContext);
   const [isloading, setIsloading] = useState<boolean>(false);
   const [wasDeleted, setWasDeleted] = useState<boolean>(false);
 
-  const { open, handleClickOpen, handleClose } = useToggleDialog();
+  const dialogHook = useToggleDialog();
 
-  // const handleClickOpen = ()=>{
-  //   const swalWithBootstrapButtons = Swal.mixin({
-  //     customClass: {
-  //       confirmButton: 'btn btn-success',
-  //       cancelButton: 'btn btn-danger'
-  //     },
-  //     buttonsStyling: false
-  //   })
+  const [rowData, setRowData] = useState<ClientData>({} as ClientData);
 
-  //   swalWithBootstrapButtons.fire({
-  //     title: 'Are you sure?',
-  //     text: "You won't be able to revert this!",
-  //     icon: 'warning',
-  //     showCancelButton: true,
-  //     confirmButtonText: 'Yes, delete it!',
-  //     cancelButtonText: 'No, cancel!',
-  //     reverseButtons: true
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-  //       swalWithBootstrapButtons.fire(
-  //         'Deleted!',
-  //         'Your file has been deleted.',
-  //         'success'
-  //       )
-  //     } else if (
-  //       /* Read more about handling dismissals below */
-  //       result.dismiss === Swal.DismissReason.cancel
-  //     ) {
-  //       swalWithBootstrapButtons.fire(
-  //         'Cancelled',
-  //         'Your imaginary file is safe :)',
-  //         'error'
-  //       )
-  //     }
-  //   });
-  // }
+  // When i trigger this function the form data gets passed to this context.
+  const openDeleteDialog = (rowData: ClientData) => {
+    setRowData(rowData);
+    dialogHook.handleClickOpen();
+  };
 
-  const onError = useCallback(() => {
+
+  const onStart = () => {
+    setIsloading(true);
+    setWasDeleted(false);
+  };
+
+  const onError = () => {
     setIsloading(false);
     setWasDeleted(false);
-  }, []);
+  };
 
-  const handleDelete = useCallback(async () => {
+  const onSucces = () => {
+    setIsloading(false);
+    setWasDeleted(true);
+  };
 
+  const onReset = () => {
+    setIsloading(false);
+    setWasDeleted(false);
+  };
+
+  const handleDelete = async () => {
 
     try {
-      await ClientService.delete('client/'+rowData.id) as any;
-      setIsloading(false);
-      setWasDeleted(true);
+      onStart()
+      await ClientService.delete('client/' + rowData.id) as any;
+      onSucces();
       console.log("Client---Delete")
       setTimeout(() => {
         tableContext.fetchNewRepairs();
-        handleClose();
-        setWasDeleted(false);
+        dialogHook.handleClose();
+        onReset()
       }, 1000);
 
     } catch (error: any) {
       console.log(error.message);
       onError();
+      setTimeout(() => {
+        onReset()
+      }, 2000);
     }
-
-
-
-    // // Set loadign as true.
-    // setIsloading(true);
-
-    // fetch("http://localhost:3000/api/repairs", {
-    //   referrerPolicy: "strict-origin-when-cross-origin",
-    //   body: '{"_id":"' + rowData.id + '"}',
-    //   method: "DELETE",
-    //   mode: "cors",
-    //   credentials: "omit",
-    // })
-    //   .then((data) => data.json())
-    //   // If response resolves.
-    //   .then(async (data) => {
-    //     setIsloading(false);
-    //     if (data.status == "ok") {
-    //       console.log(data);
-    //       setWasDeleted(true);
-
-
-
-    //       return;
-    //     }
-    //     onError();
-    //     console.log(data);
-    //   })
-    //   // If rejects.
-    //   .catch((err) => {
-    //     onError();
-    //   });
-
-  }, []);
+  };
 
   const conTextValue = {
-    handleClickOpen,
+    openDeleteDialog
   };
   return (
     <RowDeleteDialogContext.Provider value={conTextValue}>
       {/* Change state dialog */}
       <DeleteDialog
-        open={open}
+        open={dialogHook.open}
         isloading={isloading}
-        onClose={handleClose}
+        onClose={dialogHook.handleClose}
         notifySave={tableContext.fetchNewRepairs}
         onDelete={handleDelete}
         wasDeleted={wasDeleted}
@@ -149,17 +111,17 @@ export function RowDeleteDialogContextProvider({
   );
 }
 
-// Comsumers
-// This consumer only cares about the toggleDialog Function.
 
-export function withContextDeleteDialogToggle<P extends object>(
-  Component: React.ComponentType<P>
-) {
-  const PureComponent: any = memo(Component);
+export const DeleteButton = () => {
+  const { rowData } = useContext(RowDataContext);
+  const { openDeleteDialog } = useContext(RowDeleteDialogContext);
 
-  return (props: P) => {
-    const state = useContext(RowDeleteDialogContext);
-
-    return <PureComponent {...props} handleClickOpen={state.handleClickOpen} />;
-  };
-}
+  return (
+    <ButtonWithToolTip
+      onClick={() => openDeleteDialog(rowData)}
+      title="Delete"
+      Icon={DeleteIcon}
+      color={"error"}
+    />
+  );
+};

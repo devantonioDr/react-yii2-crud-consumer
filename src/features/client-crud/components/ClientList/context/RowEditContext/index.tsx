@@ -1,20 +1,22 @@
 import Button from "@mui/material/Button";
 import {
   createContext,
-  memo,
   useCallback,
   useContext,
   useState,
 } from "react";
 
 import { RepairListContext } from "..";
-import {  withContextEfficientFormSubmit } from "../../../../context/EfficientFormContextProvider";
+import { withContextEfficientFormSubmit } from "../../../../context/EfficientFormContextProvider";
 import { filterNonObjects, nestObjectKeys } from "../../../../helper/objectHelpers";
 import ClientService from "../../../../services/ClientService";
 import { WithProvidersClientForm } from "../../../clientForm/withProvidersClientForm";
 import { useFeedBackDialog } from "../../../contextDialog/hooks/useFeedBackDialog";
 import { useToggleDialog } from "../../../contextDialog/hooks/useToggleDialog";
-
+import { ButtonWithToolTip } from "../../../UI/Button";
+import { RowDataContext } from "../RowDataProviderContext";
+import EditIcon from '@mui/icons-material/Edit';
+import LoadingButton from "@mui/lab/LoadingButton";
 
 /*
  This context responsability is to open the form to 
@@ -33,15 +35,16 @@ export const RowEditDialogContext = createContext<any>({} as any);
 
 export function RowEditDialogContextProvider({ children }: RowEditDialogContextProviderProps) {
 
-
-
-  console.log("Edit form ready");
   const tableContext = useContext(RepairListContext);
 
   const feedBackDialog = useFeedBackDialog();
-
   const dialogHook = useToggleDialog();
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [rowData, setRowData] = useState<ClientData>({} as ClientData);
+
+
+
 
   // When i trigger this function the form data gets passed to this context.
   const openEditForm = (rowData: ClientData) => {
@@ -54,7 +57,7 @@ export function RowEditDialogContextProvider({ children }: RowEditDialogContextP
     feedBackDialog.handleOpen(message, type);
     setTimeout(() => {
       feedBackDialog.handleClose();
-      dialogHook.handleClose();
+      type === "positive" && dialogHook.handleClose();
     }, 3000);
   };
 
@@ -65,17 +68,15 @@ export function RowEditDialogContextProvider({ children }: RowEditDialogContextP
   }
 
 
-  const handleSubmit = useCallback(async (formData: any) => {
+  const handleSubmit = async (formData: any) => {
 
-    const nested = nestObjectKeys(formData.data);
     const data = nestObjectKeys(formData.data);
 
     const cliente = filterNonObjects(data);
     const { perfil, address } = data;
 
-    console.log('nested', nested);
-
     try {
+      setIsLoading(true);
       await ClientService.put('client/' + rowData.id, cliente) as any;
       await Promise.all([
         ClientService.put('perfil/' + perfil.id, perfil),
@@ -83,15 +84,14 @@ export function RowEditDialogContextProvider({ children }: RowEditDialogContextP
       ]);
       feedBackWithDissmiss("Se editó el cliente " + perfil?.first_name, "positive")
       console.log("Client---Update")
-      fecthNewClients()
+      fecthNewClients();
 
     } catch (error: any) {
       console.log(error.message);
-      feedBackWithDissmiss(error.message, "positive")
+      feedBackWithDissmiss(error.message, "negative");
     }
-
-
-  }, []);
+    setIsLoading(false);
+  };
 
 
   const conTextValue = {
@@ -112,7 +112,7 @@ export function RowEditDialogContextProvider({ children }: RowEditDialogContextP
         DialogOptionsComp={
           <>
             <Button variant="contained" onClick={dialogHook.toggle}>Cerrar</Button>
-            <SaveChangesButton variant="outlined" >Guardar</SaveChangesButton>
+            <SaveChangesButton loading={isLoading} variant="outlined" >Guardar</SaveChangesButton>
           </>
         }
       />
@@ -121,19 +121,16 @@ export function RowEditDialogContextProvider({ children }: RowEditDialogContextP
   );
 }
 
-const SaveChangesButton = withContextEfficientFormSubmit(Button);
+const SaveChangesButton = withContextEfficientFormSubmit(LoadingButton);
 
-// Comsumers
-// This consumer only cares about the toggleDialog Function.
+export const EditRowButton = () => {
+  const { rowData } = useContext(RowDataContext);
+  const { openEditForm } = useContext(RowEditDialogContext);
 
-export function withContextEditDialogToggle<P extends object>(
-  Component: React.ComponentType<P>
-) {
-  const PureComponent: any = memo(Component);
-
-  return (props: P) => {
-    const state = useContext(RowEditDialogContext);
-
-    return <PureComponent {...props} handleClickOpen={state.handleClickOpen} />;
-  };
-}
+  return <ButtonWithToolTip
+    onClick={() => openEditForm(rowData)}
+    title="Edit"
+    Icon={EditIcon}
+    color="primary"
+  />
+};

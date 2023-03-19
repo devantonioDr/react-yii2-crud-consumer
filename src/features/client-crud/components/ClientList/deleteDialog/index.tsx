@@ -21,8 +21,8 @@ export interface RepairChangeStatusDialogProps {
 const DeletedButton = () => {
   return (
     <Button color="success" variant="contained">
-      <DeleteIcon fontSize={"small"} sx={{ mr: 1 }} />
-      <span style={{ marginTop: "3px" }}>Borrado</span>
+      <DeleteIcon style={{opacity:1}} fontSize={"small"} sx={{ mr: 1 }} />
+      <span style={{ marginTop: "3px" }}>Eliminado</span>
     </Button>
   );
 };

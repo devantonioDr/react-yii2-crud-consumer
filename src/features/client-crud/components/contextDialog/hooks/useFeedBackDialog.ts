@@ -15,6 +15,7 @@ export const useFeedBackDialog = () => {
     };
   
     const handleOpen = (message: string, type: "positive" | "negative") => {
+      setFeedBackType(type);
       setMessage(message);
       setOpen(true);
     };
@@ -25,8 +26,6 @@ export const useFeedBackDialog = () => {
     };
   
     return {
-      setNegative,
-      setPositive,
       handleOpen,
       handleClose,
       message,

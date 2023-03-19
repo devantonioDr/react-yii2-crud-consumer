@@ -8,7 +8,7 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import moment from "moment";
-import { getRamdomBackgroundColor } from "../../../helper/getRamdomColor";
+
 
 export function InfoIdButton({ invoiceId }: { invoiceId: string | number }) {
   return (
@@ -57,6 +57,7 @@ interface RowExtraInfoProps extends ClientData {
 
 export function RowExtraInfo(props: RowExtraInfoProps) {
 
+
   return (
     <TableRow
     // style={getRamdomBackgroundColor()}
@@ -95,16 +96,16 @@ export function RowExtraInfo(props: RowExtraInfoProps) {
   );
 };
 
-export function SelectRowCheckBox({ selected, onClick, invoiceId }: any) {
+export function SelectRowCheckBox({ selected, onClick, id }: any) {
   return (
     <Checkbox
       // style={getRamdomBackgroundColor()}
       color="primary"
       className="row_checkbox"
       checked={selected}
-      onClick={() => onClick(invoiceId)}
+      onClick={() => onClick(id)}
       inputProps={{
-        "aria-labelledby": invoiceId,
+        "aria-labelledby": id,
       }}
     />
   );

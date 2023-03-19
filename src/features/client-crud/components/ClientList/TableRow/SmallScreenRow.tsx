@@ -1,25 +1,23 @@
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import TableCell from "@mui/material/TableCell";
 import Typography from "@mui/material/Typography";
-import { withContextSelectRowCheckBox } from "../context/RowSelectContext";
-import { withContextShowMore } from "../context/RowShowMoreContext";
-import { StatusRow } from "../StatusRow";
+import { memo } from "react";
+
+import withRowData from "../context/RowDataProviderContext/withRowData";
+import { withSelectRowCheckBox } from "../context/RowSelectContext/withSelectRowCheckBox";
+import { withExpanded } from "../context/RowShowMoreContext/withExpanded";
+
 import TableRowActions from "./actionsUi";
-import { InfoIdButton, SelectRowCheckBox, ShowDate, ShowMoreButton } from "./commonUi";
+import { SelectRowCheckBox, ShowMoreButton } from "./commonUi";
 
 // Assign context for SelectRowCheckBox actions
-const SelectRowCheckBoxWithContext =
-  withContextSelectRowCheckBox(SelectRowCheckBox);
+const SelectRowCheckBoxWithContext = withSelectRowCheckBox(SelectRowCheckBox);
 
 // Assign context for ShowMore Row actions
-const ShowMoreButtonWithContext = withContextShowMore(ShowMoreButton);
+const ShowMoreButtonWithContext = withExpanded(ShowMoreButton);
 
-
-
-function SmallScreenRowCell({ title, value }: any) {
+const SmallScreenRowCell = memo(({ title, value }: any) => {
   return (
     <Box
       sx={{
@@ -34,10 +32,12 @@ function SmallScreenRowCell({ title, value }: any) {
       {/* <span>{value}</span> */}
     </Box>
   );
-}
+});
 
-export const SmallScreenRowContent = ({ data }: { data: ClientData }) => {
-  let { id, status, email,perfil } = data;
+export const SmallScreenRowContent = withRowData(({ rowData }: any) => {
+
+  const { id, status, email, perfil } = rowData;
+  
   return (
     <>
       <TableCell padding="none" align="left">
@@ -58,4 +58,4 @@ export const SmallScreenRowContent = ({ data }: { data: ClientData }) => {
       </TableCell>
     </>
   );
-};
+});

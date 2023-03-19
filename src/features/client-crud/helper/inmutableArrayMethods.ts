@@ -6,7 +6,7 @@
 
 export const InmutableArrayMethods = {
 
-    // Gets the index of given value of the arrat
+    // Gets the index of given value of the array
     getIndexOfValue:(array:any[],value:any) => array.indexOf(value),
 
     //  Checks if a value is present in an array.

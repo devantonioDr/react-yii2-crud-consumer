@@ -1,48 +1,41 @@
 import TableCell from "@mui/material/TableCell";
-import { StatusRow } from "../StatusRow";
 import TableRowActions from "./actionsUi";
-import Chip from "@mui/material/Chip";
-import { withContextSelectRowCheckBox } from "../context/RowSelectContext";
 
-import React from "react";
+import  { useContext } from "react";
 import {
-  InfoIdButton,
   SelectRowCheckBox,
-  ShowDate,
   ShowMoreButton,
 } from "./commonUi";
-import { withContextShowMore } from "../context/RowShowMoreContext";
+
 import { Typography } from "@mui/material";
+import { withSelectRowCheckBox } from "../context/RowSelectContext/withSelectRowCheckBox";
+import { withExpanded } from "../context/RowShowMoreContext/withExpanded";
+import { RowDataContext } from "../context/RowDataProviderContext";
+import withRowData from "../context/RowDataProviderContext/withRowData";
 
+const WithExpandedShowMoreButton = withExpanded(ShowMoreButton);
 
-const ShowMoreButtonWithContext = withContextShowMore(ShowMoreButton);
+const SelectRowCheckBoxWithContext = withSelectRowCheckBox(SelectRowCheckBox);
 
-const SelectRowCheckBoxWithContext =
-  withContextSelectRowCheckBox(SelectRowCheckBox);
-
-export const NormalRowContent = ({ data }: { data: ClientData }) => {
-  let { id, status, email, perfil } = data;
-
+export const NormalRowContent = withRowData(({rowData}:any) => {
+  const {id, status, email, perfil } = rowData;
+  
   return (
     <>
       <TableCell padding="none" align="left">
         <SelectRowCheckBoxWithContext invoiceId={id} />
       </TableCell>
       <TableCell padding="none" align="left">
-        <ShowMoreButtonWithContext id={id} />
+        <WithExpandedShowMoreButton id={id} />
       </TableCell>
 
-
       <TableCell padding="none" align="left">
-        <Typography >
+        <Typography variant="subtitle1">
           {`${perfil?.first_name} ${perfil?.last_name}`}
         </Typography>
       </TableCell>
       <TableCell padding="none" align="left">
-        <Typography >
-          {email}
-        </Typography>
-
+        <Typography variant="subtitle1">{email}</Typography>
       </TableCell>
       {/* <TableCell align="left">
         <StatusRow status={status} />
@@ -50,8 +43,7 @@ export const NormalRowContent = ({ data }: { data: ClientData }) => {
 
       <TableCell padding="none" align="left">
         <TableRowActions />
-
       </TableCell>
     </>
   );
-};
+});
