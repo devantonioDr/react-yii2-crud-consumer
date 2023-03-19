@@ -14,6 +14,8 @@ import { EfficientFormContextProvider, withContextEfficientFormSubmit } from "..
 import { filterNonObjects, nestObjectKeys } from "../../../../helper/objectHelpers";
 import ClientService from "../../../../services/ClientService";
 import { ClientFormWithStepper, client_form_stepper_state } from "../../../clientForm";
+import { WithProvidersClientForm } from "../../../clientForm/withProvidersClientForm";
+import { useFeedBackDialog } from "../../../contextDialog/hooks/useFeedBackDialog";
 import { useToggleDialog } from "../../../contextDialog/hooks/useToggleDialog";
 import { DialogComponent } from "../../../contextDialog/UI/dialogComponent";
 import { StepperContextProvider } from "../../../contextStepper/context/StepperContextProvider";
@@ -34,14 +36,26 @@ export function RowEditDialogContextProvider({
 }: RowEditDialogContextProviderProps) {
   const tableContext = useContext(RepairListContext);
 
-  const [isloading, setIsloading] = useState<boolean>(false);
-  const [wasDeleted, setWasDeleted] = useState<boolean>(false);
+  const feedBackDialog = useFeedBackDialog();
+
+  const dialogHook = useToggleDialog();
+
+  const feedBackWithDissmiss = (message: string, type: "positive" | "negative") => {
+    feedBackDialog.handleOpen(message, type);
+    setTimeout(() => {
+      feedBackDialog.handleClose();
+      dialogHook.handleClose();
+    }, 3000);
+  };
+
+  const fecthNewClients = () => {
+    setTimeout(() => {
+      tableContext.fetchNewRepairs();
+    }, 1000);
+  }
 
 
-  const onError = useCallback(() => {
-    setIsloading(false);
-    setWasDeleted(false);
-  }, []);
+
 
   const handleSubmit = useCallback(async (formData: any) => {
 
@@ -59,54 +73,41 @@ export function RowEditDialogContextProvider({
         ClientService.put('perfil/' + perfil.id, perfil),
         ClientService.put('address/' + address.id, address)
       ]);
-      setIsloading(false);
-      setWasDeleted(true);
+      feedBackWithDissmiss("Se editó el cliente " + perfil?.first_name, "positive")
       console.log("Client---Update")
-      setTimeout(() => {
-        tableContext.fetchNewRepairs();
-        dialogHook.handleClose();
-        setWasDeleted(false);
-      }, 500);
+      fecthNewClients()
 
     } catch (error: any) {
       console.log(error.message);
-      onError();
+      feedBackWithDissmiss(error.message, "positive")
     }
 
 
   }, []);
 
-  const dialogHook = useToggleDialog();
 
   const conTextValue = {
     handleClickOpen: dialogHook.handleClickOpen,
   };
 
-
-
-
   return (
     <RowEditDialogContext.Provider value={conTextValue}>
       {/* Change state dialog */}
-
-      <EfficientFormContextProvider unRegisterFields={false} data={rowData} submitForm={handleSubmit as any}>
-        <StepperContextProvider steps_initial_state={client_form_stepper_state}>
-          <DialogComponent
-            keepMounted={false}
-            dialogHook={dialogHook}
-            title="Editar cliente"
-            DialogOptionsComp={
-              <>
-                <Button onClick={dialogHook.toggle}>Cerrar</Button>
-                <SaveChangesButton >Guardar</SaveChangesButton>
-              </>
-            }
-            DialogContentComp={<ClientFormWithStepper />}
-          />
-        </StepperContextProvider>
-      </EfficientFormContextProvider>
-
-
+      <WithProvidersClientForm
+        keepMounted={false}
+        data={rowData}
+        title="Editar cliente"
+        dialogHook={dialogHook}
+        feedBackDialog={feedBackDialog}
+        submitForm={handleSubmit}
+        unRegisterFields={false}
+        DialogOptionsComp={
+          <>
+            <Button variant="contained" onClick={dialogHook.toggle}>Cerrar</Button>
+            <SaveChangesButton variant="outlined" >Guardar</SaveChangesButton>
+          </>
+        }
+      />
       {children}
     </RowEditDialogContext.Provider>
   );

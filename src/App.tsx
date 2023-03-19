@@ -4,6 +4,7 @@ import Container from "@mui/material/Container";
 import { InsertClientDialog } from "./features/client-crud/components/insertClientDialog";
 import { RepairListContextProvider } from "./features/client-crud/components/ClientList/context";
 import { createTheme, Theme, ThemeProvider } from "@mui/material/styles";
+import DialogRequestOutCome from "./features/client-crud/components/contextDialog/UI/dialogRequestOutCome";
 
 
 const theme: Theme = createTheme({
@@ -20,6 +21,9 @@ const theme: Theme = createTheme({
 function App() {
   return (
     <div className="App">
+      <DialogRequestOutCome type="negative" message="Algo salió mal" />
+      <DialogRequestOutCome type="positive" message="Éxitos" />
+
       <ThemeProvider theme={theme}>
         
         <RepairListContextProvider>

@@ -7,7 +7,7 @@ import { notEmptyValidator } from "../../utils/formValidators";
 
 function Step3() {
   return (
-    <Box sx={{ marginRight: "20px", mt: 2 }}>
+    <>
       <Grid container columns={12} spacing={2}>
         <Grid item sm={6} xs={12}>
           <FormInput
@@ -70,7 +70,7 @@ function Step3() {
           "address.zip_code",
         ]}
       />
-    </Box>
+    </>
   );
 }
 

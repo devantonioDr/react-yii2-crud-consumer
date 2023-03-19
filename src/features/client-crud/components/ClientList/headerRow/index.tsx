@@ -41,18 +41,18 @@ export function RepairsTableHeader({ mode }: any) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell>
+        <TableCell padding="none">
           <SelectAllCheckBoxWithContext />
         </TableCell>
         {mode == "normal" &&
           lables.map((headCell) => (
             <TableCell
               // style={getRamdomBackgroundColor()}
+              padding="none"
               key={headCell}
               align={"left"}
-              padding={"normal"}
             >
-              <Typography variant="h6">{headCell}</Typography>
+              <Typography sx={{color:'#1565c0'}}>{headCell}</Typography>
             </TableCell>
           ))}
       </TableRow>

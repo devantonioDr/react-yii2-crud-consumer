@@ -16,6 +16,7 @@ import {
 } from "../contextStepper/context/StepperContextProvider";
 
 import { Form } from "../UI/Form";
+import Box from "@mui/material/Box";
 
 
 
@@ -40,19 +41,27 @@ export const client_form_stepper_state = [
   },
 ]
 
-
+const FormGridContainer = ({children}:any) => {
+  return (
+    <Box sx={{ marginRight: "20px", mt: 2 , maxWidth:'540px'}} >
+      {children}
+    </Box>
+  )
+}
 
 export const ClientFormWithStepper = () => {
   let stepperHook = useContext(StepperContext);
 
   return (
-    <Form>
+    <Form >
       <Stepper activeStep={stepperHook.activeStep} orientation="vertical">
         {stepperHook.steps.map((current_step: any, index: any) => (
           <Step key={current_step.label}>
             <StepLabel>{current_step.label}</StepLabel>
             <StepContent TransitionProps={{ unmountOnExit: false }}>
               <Typography>{current_step.description}</Typography>
+
+              <FormGridContainer>
               {(() => {
                 switch (index) {
                   case 0:
@@ -65,6 +74,8 @@ export const ClientFormWithStepper = () => {
                     return null;
                 }
               })()}
+              </FormGridContainer>
+
             </StepContent>
           </Step>
         ))}

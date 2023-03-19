@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 // Hooks
 import { useToggleDialog } from "../contextDialog/hooks/useToggleDialog";
@@ -11,10 +11,40 @@ import ClientService from "../../services/ClientService";
 import { RepairListContext } from "../ClientList/context";
 import { EfficientFormContextProvider } from "../../context/EfficientFormContextProvider";
 import Button from "@mui/material/Button";
+import DialogRequestOutCome from "../contextDialog/UI/dialogRequestOutCome";
+import { WithProvidersClientForm } from "../clientForm/withProvidersClientForm";
+import { useFeedBackDialog } from "../contextDialog/hooks/useFeedBackDialog";
+
+
+
+
+
+
+
+
+
 
 export const InsertClientDialog = ({ }) => {
 
   const tableContext = useContext(RepairListContext);
+
+  const feedBackDialog = useFeedBackDialog();
+
+  const dialogHook = useToggleDialog();
+
+  const feedBackWithDissmiss = (message: string, type: "positive" | "negative") => {
+    feedBackDialog.handleOpen(message, type);
+    setTimeout(() => {
+      feedBackDialog.handleClose();
+      dialogHook.handleClose();
+    }, 3000);
+  };
+
+  const fecthNewClients = () => {
+    setTimeout(() => {
+      tableContext.fetchNewRepairs();
+    }, 1000);
+  }
 
 
   const submitForm = async (values: any) => {
@@ -25,8 +55,6 @@ export const InsertClientDialog = ({ }) => {
     const cliente = filterNonObjects(data);
     const { perfil, address } = data;
 
-
-
     try {
       let resp = await ClientService.post('client', cliente) as any;
       perfil['client_id'] = resp.data.id;
@@ -36,35 +64,33 @@ export const InsertClientDialog = ({ }) => {
         ClientService.post('perfil', perfil),
         ClientService.post('address', address)
       ]);
-
       console.log("Client---Insert")
-      setTimeout(() => {
-        tableContext.fetchNewRepairs();
-        dialogHook.handleClose();
-      }, 1000);
-
+      feedBackWithDissmiss("Se creo un cliente nuevo!!", "positive");
+      fecthNewClients();
     } catch (error: any) {
-      console.log(error.message);
+      feedBackWithDissmiss(error.message, "negative");
     }
     return {};
   }
-  const dialogHook = useToggleDialog();
+
+
+
+
+
 
   return (
     <>
-      < EfficientFormContextProvider unRegisterFields={true} submitForm={submitForm as any}>
-        <StepperContextProvider steps_initial_state={client_form_stepper_state}>
-
-          <DialogToggler dialogHook={dialogHook} title="Insertar client nuevo" />
-          <DialogComponent
-            dialogHook={dialogHook}
-            title="Insertar client nuevo"
-            DialogContentComp={<ClientFormWithStepper />}
-            DialogOptionsComp={<Button onClick={dialogHook.toggle}>Cerrar</Button>}
-          />
-
-        </StepperContextProvider>
-      </EfficientFormContextProvider>
+      <DialogToggler dialogHook={dialogHook} title="Insertar client nuevo" />
+      <WithProvidersClientForm
+        title="Insertar client nuevo"
+        dialogHook={dialogHook}
+        keepMounted={false}
+        feedBackDialog={feedBackDialog}
+        submitForm={submitForm}
+        DialogOptionsComp={
+          <Button variant="contained" onClick={dialogHook.toggle}>Cerrar</Button>
+        }
+      />
     </>
   );
 };

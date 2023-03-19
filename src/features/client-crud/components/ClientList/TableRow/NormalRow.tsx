@@ -25,21 +25,21 @@ export const NormalRowContent = ({ data }: { data: ClientData }) => {
 
   return (
     <>
-      <TableCell align="left">
+      <TableCell padding="none" align="left">
         <SelectRowCheckBoxWithContext invoiceId={id} />
       </TableCell>
-      <TableCell align="left">
+      <TableCell padding="none" align="left">
         <ShowMoreButtonWithContext id={id} />
       </TableCell>
 
 
-      <TableCell align="left">
-        <Typography variant="subtitle1">
+      <TableCell padding="none" align="left">
+        <Typography >
           {`${perfil?.first_name} ${perfil?.last_name}`}
         </Typography>
       </TableCell>
-      <TableCell align="left">
-        <Typography variant="subtitle1">
+      <TableCell padding="none" align="left">
+        <Typography >
           {email}
         </Typography>
 
@@ -48,7 +48,7 @@ export const NormalRowContent = ({ data }: { data: ClientData }) => {
         <StatusRow status={status} />
       </TableCell> */}
 
-      <TableCell align="left">
+      <TableCell padding="none" align="left">
         <TableRowActions />
 
       </TableCell>

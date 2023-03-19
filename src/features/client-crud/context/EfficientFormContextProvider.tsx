@@ -21,9 +21,9 @@ export type EfficientFormState = {
 type EfficientFormContextValue = {
     value: EfficientFormState;
     setValue: React.Dispatch<any>;
-    onSubmit: (event:any) => void;
+    onSubmit: (event: any) => void;
     executeAllValidators: (satisfy?: string[]) => boolean;
-    unRegisterFields?:boolean;
+    unRegisterFields?: boolean;
 };
 
 export type validatorType = (formData: EfficientFormState) => string[];
@@ -50,12 +50,17 @@ export const EfficientFormContext = createContext<EfficientFormContextValue>(
 
 // Form context.
 export function EfficientFormContextProvider(props: {
-    data?:ClientData,
-    submitForm?: (value: EfficientFormState) => {failed:boolean,data:boolean};
-    children:any,
-    unRegisterFields?:boolean
+    data?: ClientData,
+    submitForm?: (value: EfficientFormState) => { failed: boolean, data: boolean };
+    children: any,
+    unRegisterFields?: boolean
 }) {
-     
+
+    (() => {
+        console.log("Dialog row mounted")
+    })()
+
+
     // const initialState = useMemo(()=>{
     //     return {
     //         data: props.data ? flattenObject(props.data) : {},
@@ -88,14 +93,14 @@ export function EfficientFormContextProvider(props: {
                 // Check only desired fields
 
                 if (satisfy && satisfy.indexOf(name) > -1) {
-                // Store all errors related to the current input.
-                let errors = [...executeValidators(validators, value)];
+                    // Store all errors related to the current input.
+                    let errors = [...executeValidators(validators, value)];
 
-                // Assing on the first hit only.
-                if (!haveErrors && errors.length > 0) haveErrors = true;
-                // console.log("Inside:", { haveErrors });
-                // Assign errors to corrresponding input.
-                // console.log(name, errors)
+                    // Assing on the first hit only.
+                    if (!haveErrors && errors.length > 0) haveErrors = true;
+                    // console.log("Inside:", { haveErrors });
+                    // Assign errors to corrresponding input.
+                    // console.log(name, errors)
                     acc[name] = errors;
                 }
 
@@ -116,17 +121,17 @@ export function EfficientFormContextProvider(props: {
 
 
     // basic onSubmit handler.
-    const onSubmit = (event:any) => {
+    const onSubmit = (event: any) => {
         event.preventDefault();
         // const haveErrors = executeAllValidators();
-        if(props.submitForm){
-            const {failed,data} = props.submitForm(value);
+        if (props.submitForm) {
+            const { failed, data } = props.submitForm(value);
         }
-        
+
     };
 
     // Creates the context value.
-    const contextValue = { value, setValue, onSubmit, executeAllValidators,unRegisterFields:props.unRegisterFields };
+    const contextValue = { value, setValue, onSubmit, executeAllValidators, unRegisterFields: props.unRegisterFields };
 
     // Returns the context provider.
     return (
@@ -143,7 +148,7 @@ export const withContextEfficientFormSubmit = <T extends object>(
     const PureWrapped = memo(Wrapped);
     return (props: any) => {
         const { onSubmit } = useContext(EfficientFormContext);
-        return <PureWrapped   onClick={onSubmit}  {...props}/>;
+        return <PureWrapped onClick={onSubmit}  {...props} />;
     };
 };
 
@@ -172,7 +177,7 @@ export const withContextEfficientFormInput = <T extends object>(
         defaultValue?: string;
         startAdornment?: JSX.Element;
     }) => {
-        const { value, setValue,unRegisterFields } = useContext(EfficientFormContext);
+        const { value, setValue, unRegisterFields } = useContext(EfficientFormContext);
 
         // Make name from label.
         const inputName = props.name;
@@ -191,8 +196,8 @@ export const withContextEfficientFormInput = <T extends object>(
 
                     // Below code is a little bit verbose but efficient bacause it only mutates
                     // needed values instead of recreating the entire formState.
-                    const defaultValue =   props.defaultValue || "" ;
-              
+                    const defaultValue = props.defaultValue || "";
+
                     // console.log(name,formState.data[name]);
                     return {
                         ...formState,
@@ -244,7 +249,7 @@ export const withContextEfficientFormInput = <T extends object>(
             // console.log("Inputs registered to state.",inputName);
             registerInput(inputName);
             return () => {
-                if(unRegisterFields){
+                if (unRegisterFields) {
                     // console.log("Unregistered: " + inputName)
                     unregisterInput(inputName);
                 }

@@ -3,7 +3,6 @@ import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableContainer from "@mui/material/TableContainer";
 
-import { debug } from "console";
 import Paper from "@mui/material/Paper";
 import TablePagination from "@mui/material/TablePagination";
 import { withContextSelectRowHeader } from "./components/ClientList/context/RowSelectContext";
@@ -42,13 +41,13 @@ const usePagination = () => {
 const RepairsTableOptionsForSelectedWithContext = withContextSelectRowHeader(TableToolbar);
 
 export default function RepairsTable() {
-  
+
   const repairListContext = React.useContext(RepairListContext);
   const mode = useRepairListResponsiveRow();
   const rows = repairListContext.repairs;
 
   // Pagination
-  const { page, rowsPerPage, setPage, setRowsPerPage, handleChangePage,handleChangeRowsPerPage } = usePagination();
+  const { page, rowsPerPage, setPage, setRowsPerPage, handleChangePage, handleChangeRowsPerPage } = usePagination();
 
   return (
     <Paper sx={{ width: "100%", mb: 2, mt: 4 }}>
@@ -74,11 +73,11 @@ export default function RepairsTable() {
         </Table>
       </TableContainer>
       <TablePagination
-      labelRowsPerPage="Filas por página"
-      labelDisplayedRows={({ from, to, count }) => {
-        return `${from}–${to} de ${count !== -1 ? count : `más de ${to}`}`;
+        labelRowsPerPage="Filas por página"
+        labelDisplayedRows={({ from, to, count }) => {
+          return `${from}–${to} de ${count !== -1 ? count : `más de ${to}`}`;
         }}
-        rowsPerPageOptions={[5, 10, 25]}
+        rowsPerPageOptions={[1, 5, 10, 25]}
         component="div"
         count={rows.length}
         rowsPerPage={rowsPerPage}

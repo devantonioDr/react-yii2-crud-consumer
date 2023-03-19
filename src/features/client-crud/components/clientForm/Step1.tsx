@@ -8,21 +8,22 @@ import { notEmptyValidator, onlyLetters } from "../../utils/formValidators";
 
 function Step1() {
   return (
-    <Box sx={{ marginRight: "20px", mt: 2 }}>
+    <>
       <Grid container columns={12} spacing={2}>
         <Grid item sm={6} xs={12}>
           <FormInput
             label="Nombres"
             name="perfil.first_name"
-            validators={[notEmptyValidator,onlyLetters]}
+            validators={[notEmptyValidator, onlyLetters]}
             validateAsTyping={true}
           />
         </Grid>
+
         <Grid item sm={6} xs={12}>
           <FormInput
             label="Apellido"
             name="perfil.last_name"
-            validators={[notEmptyValidator,onlyLetters]}
+            validators={[notEmptyValidator, onlyLetters]}
             validateAsTyping={true}
           />
         </Grid>
@@ -44,10 +45,12 @@ function Step1() {
           />
         </Grid>
       </Grid>
+
+
       <StepperBackAndForth
         satisfy={["perfil.first_name", "perfil.last_name", "phone", "email"]}
       />
-    </Box>
+    </>
   );
 }
 

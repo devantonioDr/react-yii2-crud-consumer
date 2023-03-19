@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Stack from "@mui/material/Stack";
-import { getRamdomBackgroundColor } from "../../../helper/getRamdomColor";
 import { withContextDeleteDialogToggle } from "../context/RowDeleteContext";
 import { ButtonWithToolTip } from "../../UI/Button";
 import { withContextEditDialogToggle } from "../context/RowEditContext";
@@ -12,10 +11,10 @@ import EditIcon from '@mui/icons-material/Edit';
 const DeleteButton = ({ handleClickOpen }: { handleClickOpen?: Function }) => {
   return (
     <ButtonWithToolTip
-      style={getRamdomBackgroundColor()}
       onClick={handleClickOpen}
       title="Delete"
       Icon={DeleteIcon}
+      color={"error"}
     />
   );
 };
@@ -23,10 +22,10 @@ const DeleteButton = ({ handleClickOpen }: { handleClickOpen?: Function }) => {
 const EditRowButton = withContextEditDialogToggle(({ handleClickOpen }: any) => {
 
   return <ButtonWithToolTip
-    style={getRamdomBackgroundColor()}
     onClick={handleClickOpen}
     title="Edit"
     Icon={EditIcon}
+    color="primary"
   />
 });
 

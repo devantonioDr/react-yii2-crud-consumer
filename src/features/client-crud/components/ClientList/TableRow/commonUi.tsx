@@ -44,8 +44,8 @@ export function ShowMoreButton(props: any) {
 const TableTr = ({ title, text, style }: any) => {
   return (
     <tr>
-      <td style={style}><Typography>{title}</Typography></td>
-      <td style={style}><Typography variant="subtitle1">{text}</Typography></td>
+      <td style={style}><Typography variant="subtitle1">{title}</Typography></td>
+      <td style={style}><Typography >{text}</Typography></td>
     </tr>
   );
 };
