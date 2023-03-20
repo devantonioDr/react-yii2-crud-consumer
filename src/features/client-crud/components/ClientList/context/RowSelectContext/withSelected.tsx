@@ -1,24 +1,26 @@
-
-import { useContext,memo } from "react";
+import { useContext, memo } from "react";
 import { RowSelectContext } from "./context";
 import { RowDataContext } from "../RowDataProviderContext";
 
-// This one cares whether or not the current row is selected.
+export function withtSelected<P extends object>(
+  Component: React.ComponentType<P>
+) {
+  const PureComponent: any = memo(Component);
 
-export default function withSelected<P extends object>(Component: React.ComponentType<P>) {
-    const PureComponent: any = memo(Component);
-  
-    return function WithSelected(props: P & { children: any }) {
+  return function WithtSelected(props: P) {
+    const { rowData } = useContext(RowDataContext);
+    // console.log("WithtSelected",rowData)
+    const { selectedRows } = useContext(RowSelectContext);
+    // Check if the current invoice id is present in the list of selected rows.
+    // selected = true if present.
+    const selected = selectedRows.indexOf(rowData.id) > -1;
 
-      const { rowData: { id } } = useContext(RowDataContext);
-      const { selectedRows } = useContext(RowSelectContext);
-  
-      const selected = selectedRows.indexOf(id) !== -1;
-
-      return (
-        <PureComponent {...props} selected={selected}>
-          {props.children}
-        </PureComponent>
-      );
-    };
+    return (
+      <PureComponent
+        {...props}
+        selected={selected}
+        id={rowData.id}
+      />
+    );
   };
+};

@@ -5,6 +5,7 @@ import { EditRowButton } from "../context/RowEditContext";
 
 
 export default function TableRowActions() {
+  
   return (
     <Stack direction="row" spacing={0}>
       <EditRowButton />

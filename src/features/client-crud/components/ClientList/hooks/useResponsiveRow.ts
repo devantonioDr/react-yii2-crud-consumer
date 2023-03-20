@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { TemplateMode } from "../../../types/Template";
 
 
-const useRepairListResponsiveRow = () => {
+const useResponsiveLayout = () => {
     const [template, setTemplate] = useState<TemplateMode>('stacked');
     const theme = useTheme();
     const sm = useMediaQuery(theme.breakpoints.down('sm'));
@@ -14,4 +14,4 @@ const useRepairListResponsiveRow = () => {
     }, [sm]);
     return template;
 }
-export default useRepairListResponsiveRow;
+export default useResponsiveLayout;

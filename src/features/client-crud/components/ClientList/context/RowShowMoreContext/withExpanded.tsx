@@ -18,18 +18,20 @@ type WithExpandedProps = {
 export function withExpanded<P extends object>(
     Component: React.ComponentType<P>
 ) {
-    const PureShowMoreButton: any = memo(Component
-        //   , (prev, next) => {
-        //   console.log(prev, next);
-        //   return false;
-        // }
+    const PureShowMoreButton: any = memo(Component,
+        (prev:any, next:any) => {
+
+          return prev.isExpanded === next.isExpanded;
+        }
     );
 
     return function WithExpanded(props: P & WithExpandedProps) {
         const { rowData } = useContext(RowDataContext);
         const { expanded ,toggleExpanded} = useContext(RowShowMoreContext);
+
         const isExpanded = expanded === rowData?.id;
-        
+
+        // debugger;
         return (
             <PureShowMoreButton
                 onClick={toggleExpanded}

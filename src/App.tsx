@@ -1,4 +1,4 @@
-import RepairsTable from "./features/client-crud";
+import RepairsTable from "./features/client-crud/components/ClientList";
 import Container from "@mui/material/Container";
 
 import { InsertClientDialog } from "./features/client-crud/components/insertClientDialog";

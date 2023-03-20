@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import RepairsTable from "../../..";
+import RepairsTable from "..";
+import { ResponsiveLayoutContextProvider } from "../../../context/ResponsiveLayoutContextProvider";
 import ClientService from "../../../services/ClientService";
 import { InsertClientDialog } from "../../insertClientDialog";
 import { RowDeleteDialogContextProvider } from "./RowDeleteContext";
@@ -48,9 +49,11 @@ export const RepairListContextProvider = (props: any) => {
         <RowDeleteDialogContextProvider>
           <RowShowMoreContextProvider>
             <RowSelectContextProvider>
-              <InsertClientDialog />
-              <RepairsTable />
-              {props.children}
+              <ResponsiveLayoutContextProvider>
+                <InsertClientDialog />
+                <RepairsTable />
+                {props.children}
+              </ResponsiveLayoutContextProvider>
             </RowSelectContextProvider>
           </RowShowMoreContextProvider>
         </RowDeleteDialogContextProvider>

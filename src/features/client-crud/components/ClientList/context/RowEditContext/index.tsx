@@ -126,7 +126,7 @@ const SaveChangesButton = withContextEfficientFormSubmit(LoadingButton);
 export const EditRowButton = () => {
   const { rowData } = useContext(RowDataContext);
   const { openEditForm } = useContext(RowEditDialogContext);
-
+  
   return <ButtonWithToolTip
     onClick={() => openEditForm(rowData)}
     title="Edit"

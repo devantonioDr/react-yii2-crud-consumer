@@ -115,7 +115,7 @@ export function RowDeleteDialogContextProvider({
 export const DeleteButton = () => {
   const { rowData } = useContext(RowDataContext);
   const { openDeleteDialog } = useContext(RowDeleteDialogContext);
-
+  
   return (
     <ButtonWithToolTip
       onClick={() => openDeleteDialog(rowData)}

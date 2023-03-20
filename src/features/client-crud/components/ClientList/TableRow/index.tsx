@@ -2,56 +2,46 @@ import TableRow from "@mui/material/TableRow";
 
 import { RowChangeStatusDialogContextProvider } from "../context/RowChangeStatusDialogContext";
 
-import React from "react";
-import { RowExtraInfo } from "./commonUi";
+import React, { useContext } from "react";
+
 import { SmallScreenRowContent } from "./SmallScreenRow";
 import { NormalRowContent } from "./NormalRow";
 import { TemplateMode } from "../../../types/Template";
 import { RowDataContextProvider } from "../context/RowDataProviderContext";
 
-import withSelectedTableRow from "../context/RowSelectContext/withSelected";
 import { withExpanded } from "../context/RowShowMoreContext/withExpanded";
+import useRepairListResponsiveRow from "../hooks/useResponsiveRow";
+import { ResponsiveLayoutContext } from "../../../context/ResponsiveLayoutContextProvider";
+import { CollapsableRow } from "./CollapsableRow";
+import { SelectableRow } from "./SelectableRow";
+import { ExtraInfoRow } from "./ExtraInfoRow";
 
-// Assign context for ShowMore Row actions
 
-// Assign context for Selected Row actions;
-const WithSelectedTableRow = withSelectedTableRow(TableRow);
+const RowMainContentWrapper = () => {
+  const { mode } = useContext(ResponsiveLayoutContext);
 
-class RowMainContentWrapper extends React.PureComponent<any> {
-  render(): React.ReactNode {
-    let { layOutMode, rowData }: any = this.props;
-
-    const showNormalRow = layOutMode === "normal" ? true : false;
-
-    return (
-      <>
-        <WithSelectedTableRow sx={{ display: showNormalRow ? "table-row" : 'none' }}>
-          <NormalRowContent />
-        </WithSelectedTableRow>
-
-        <WithSelectedTableRow sx={{ display: showNormalRow ? "none" : 'table-row' }}>
-          <SmallScreenRowContent />
-        </WithSelectedTableRow>
-      </>
-    );
-  }
-}
-
-const RowExtraInfoWithContext = withExpanded(RowExtraInfo);
-
-export function RepairsTableRow({
-  data,
-  mode,
-}: {
-  data: ClientData;
-  mode: TemplateMode;
-}) {
+  const showNormalRow = mode === "normal" ? true : false;
+  
   return (
     <>
-      <RowDataContextProvider rowData={data}>
-        <RowMainContentWrapper layOutMode={mode} rowData={data} />
-        <RowExtraInfoWithContext {...data} />
-      </RowDataContextProvider>
+      <SelectableRow sx={{ display: showNormalRow ? "table-row" : "none" }}>
+        <NormalRowContent />
+      </SelectableRow>
+
+      <SelectableRow sx={{ display: showNormalRow ? "none" : "table-row" }}>
+        <SmallScreenRowContent />
+      </SelectableRow>
     </>
+  );
+};
+
+export function RepairsTableRow({ data }: { data: ClientData }) {
+  return (
+    <RowDataContextProvider rowData={data}>
+      <RowMainContentWrapper />
+      <CollapsableRow>
+        <ExtraInfoRow />
+      </CollapsableRow>
+    </RowDataContextProvider>
   );
 }

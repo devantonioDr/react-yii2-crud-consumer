@@ -3,7 +3,10 @@ import Checkbox from "@mui/material/Checkbox";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import { useContext } from "react";
+import { ResponsiveLayoutContext } from "../../../context/ResponsiveLayoutContextProvider";
 import { withContextSelectAllCheckbox } from "../context/RowSelectContext/withContextSelectAllCheckbox";
+import useRepairListResponsiveRow from "../hooks/useResponsiveRow";
 
 export const SelectAllCheckBox = ({
   indeterminate,
@@ -25,33 +28,42 @@ export const SelectAllCheckBox = ({
   );
 };
 
-const SelectAllCheckBoxWithContext = withContextSelectAllCheckbox(SelectAllCheckBox);
+const SelectAllCheckBoxWithContext =
+  withContextSelectAllCheckbox(SelectAllCheckBox);
 
-export function RepairsTableHeader({ mode }: any) {
+const ImprovedTh = ({ Content,width }: any) => {
+
+  return (
+    <TableCell width={width} padding="none" >
+      {Content}
+    </TableCell>
+  );
+
+};
+
+export function RepairsTableHeader() {
+  const { mode } = useContext(ResponsiveLayoutContext);
   let lables = [
-    "",
-    "Nombre",
-    // "IMEI",
-    "Email",
-    "Acciones",
+    { title: "", width: "20%" },
+    { title: "Nombre", width: "20%" },
+    { title: "Email", width: "25%" },
+    { title: "Acciones", width: "25%" },
   ];
 
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="none">
-          <SelectAllCheckBoxWithContext />
-        </TableCell>
+        <ImprovedTh width = "10%" Content={<SelectAllCheckBoxWithContext />} />
+
         {mode == "normal" &&
-          lables.map((headCell) => (
-            <TableCell
-              // style={getRamdomBackgroundColor()}
-              padding="none"
-              key={headCell}
-              align={"left"}
-            >
-              <Typography sx={{color:'#1565c0'}}>{headCell}</Typography>
-            </TableCell>
+          lables.map(({ title, width }) => (
+            <ImprovedTh
+              width={width}
+              key={title}
+              Content={
+                <Typography sx={{ color: "#1565c0" }}>{title}</Typography>
+              }
+            />
           ))}
       </TableRow>
     </TableHead>

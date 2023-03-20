@@ -1,4 +1,5 @@
-import { createContext, ReactNode } from "react";
+import { createContext, memo, ReactNode } from "react";
+import { deepEqualRowData } from "../../utils/deepEqualRowData";
 
 
 /* 
@@ -20,17 +21,17 @@ type RowDataContextValue = {
 
 export const RowDataContext = createContext<RowDataContextValue>({} as RowDataContextValue);
 
-export function RowDataContextProvider({
+export  const RowDataContextProvider = memo(({
   children,
   rowData
-}: RowDataContextProviderProps) {
+}: RowDataContextProviderProps) => {
 
   const conTextValue = {rowData};
-
+  
   return (
     <RowDataContext.Provider value={conTextValue}>
       {children}
     </RowDataContext.Provider>
   );
-};
+},deepEqualRowData);
 

@@ -6,12 +6,12 @@ import TableContainer from "@mui/material/TableContainer";
 
 import Paper from "@mui/material/Paper";
 import TablePagination from "@mui/material/TablePagination";
-import useRepairListResponsiveRow from "./components/ClientList/hooks/useResponsiveRow";
-import { TableToolbar } from "./components/ClientList/TableToolbar";
-import { RepairListContext } from "./components/ClientList/context";
-import { RepairsTableHeader } from "./components/ClientList/headerRow";
-import { RepairsTableRow } from "./components/ClientList/TableRow";
-import { withSelectedCount } from "./components/ClientList/context/RowSelectContext/withSelectedCount";
+import useRepairListResponsiveRow from "./hooks/useResponsiveRow";
+import { TableToolbar } from "./TableToolbar";
+import { RepairListContext } from "./context";
+import { RepairsTableHeader } from "./headerRow";
+import { RepairsTableRow } from "./TableRow";
+import { withSelectedCount } from "./context/RowSelectContext/withSelectedCount";
 
 const usePagination = () => {
   const [page, setPage] = React.useState(0);
@@ -44,7 +44,7 @@ const WithSelectedCountToolbar = withSelectedCount(TableToolbar);
 export default function RepairsTable() {
 
   const repairListContext = React.useContext(RepairListContext);
-  const mode = useRepairListResponsiveRow();
+  
   const rows = repairListContext.repairs;
 
   // Pagination
@@ -55,18 +55,17 @@ export default function RepairsTable() {
       <WithSelectedCountToolbar selectedCount={0} />
       <TableContainer>
         <Table
-          sx={{ minWidth: 3, padding: "0px 16px 0px 16px" }}
+          sx={{  width:"100%",minWidth: 3, padding: "0px 16px 0px 16px" }}
           aria-labelledby="tableTitle"
           size={"small"}
         >
-          <RepairsTableHeader mode={mode} />
+          <RepairsTableHeader />
           <TableBody>
             {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((data: ClientData, index: number) => {
               return (
                 <RepairsTableRow
                   key={`${data.id}_repair_row_${index}`}
                   data={data}
-                  mode={mode}
                 />
               );
             })}
